@@ -1,7 +1,7 @@
 ## Hi, I'm Rimuwu 👋
 
 - 🍡 I am RimUwU, and this is my profile!
-- 🤖 I write to chatbots in 🐍Python.
+- 🤖 I write to chatbots on 🐍Python.
 - 🎍 I love Japan and its culture!
 
 ###  Active projects 🎮
