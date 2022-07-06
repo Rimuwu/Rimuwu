@@ -10,3 +10,11 @@
 
 ###  Statistics 🎋
 ![GitHub stats](https://github-readme-stats.vercel.app/api?username=rimuwu&count_private=true&theme=tokyonight&show_icons=true&custom_title=Rimuwu )
+
+###  Profile 🕹
+
+![GitHub stats](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Rimuwu&theme=github_dark )
+
+###  Achievements 🏆
+
+![GitHub stats](https://github-profile-trophy.vercel.app/?username=Rimuwu&margin-w=5&theme=radical)
