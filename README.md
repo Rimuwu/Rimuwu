@@ -1,4 +1,4 @@
-## Hi, I'm Rimuwu 👋
+## Hi, I'm Rimuwu <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="30">
 
 - 🍡 I am RimUwU, and this is my profile!
 - 🤖 I write to chatbots on 🐍Python.
@@ -6,7 +6,7 @@
 
 ###  Active projects 🎮
 
-- [DinoGochi](https://github.com/Rimuwu/DinoGochi) - Tamagotchi is a telegram bot.
+- [DinoGochi](https://github.com/Rimuwu/DinoGochi) - Tamagotchi is a telegram bot. <img src="images/dino.png" width="70">
 
 ###  Statistics 🎋
 ![GitHub stats](https://github-readme-stats.vercel.app/api?username=rimuwu&count_private=true&theme=tokyonight&show_icons=true&custom_title=Rimuwu )
