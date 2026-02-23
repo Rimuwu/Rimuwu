@@ -2,3 +2,5 @@
 
 - 🍡 I am RimUwU, and this is my profile!
 - 🎍 I love Japan and its culture!
+
+![GitHub stats](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Rimuwu&theme=github_dark )
