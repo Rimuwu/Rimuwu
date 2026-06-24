@@ -916,7 +916,7 @@ def generate_metrics_xml_elements():
     g2_years_xml  = make_year_labels(g2_dates_clipped, G2_W, G2_H)
 
     # Year-commits sum for Graph 1 label
-    g1_total = sum(g1_vals)
+    g1_total = f'{sum(g1_vals)} commits'
 
     # ── Language # bars (top 3, full-width, 40px step) ─────────────
     BAR_CHARS = 40
@@ -976,20 +976,20 @@ def generate_metrics_xml_elements():
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ GITHUB STATISTICS ]</text>
     <!-- Stats list -->
     <g transform="translate(15,35)" font-size="11" class="monospace">
-      <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="148" class="text-white" font-weight="normal">{stars}</tspan></text>
-      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="148" class="text-white" font-weight="normal">{commits}</tspan></text>
-      <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="148" class="text-white" font-weight="normal">{prs}</tspan></text>
-      <text x="0" y="76"  class="text-green" font-weight="bold">TOTAL ISSUES:<tspan x="148" class="text-white" font-weight="normal">{issues}</tspan></text>
-      <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="148" class="text-white" font-weight="normal">{contribs}</tspan></text>
-      <text x="0" y="120" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="148" class="text-white" font-weight="normal">{joined}</tspan></text>
+      <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="120" class="text-white" font-weight="normal">{stars}</tspan></text>
+      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="120" class="text-white" font-weight="normal">{commits}</tspan></text>
+      <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="120" class="text-white" font-weight="normal">{prs}</tspan></text>
+      <text x="0" y="76"  class="text-green" font-weight="bold">TOTAL ISSUES:<tspan x="120" class="text-white" font-weight="normal">{issues}</tspan></text>
+      <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="120" class="text-white" font-weight="normal">{contribs}</tspan></text>
+      <text x="0" y="120" class="text-green" font-weight="bold">CREATED:<tspan x="120" class="text-white" font-weight="normal">{joined}</tspan></text>
     </g>
     <!-- Rank badge (right column, vertically centered) -->
-    <g transform="translate(315,100)">
-      <circle cx="0" cy="0" r="32" fill="none" stroke="{COLORS['gold']}" stroke-width="3" opacity="0.18"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="{COLORS['gold']}" stroke-width="3"
-              stroke-dasharray="201" stroke-dashoffset="50" stroke-linecap="round"/>
-      <text x="0" y="7"  class="monospace text-gold" font-size="20" text-anchor="middle" font-weight="bold">{rank}</text>
-      <text x="0" y="44" class="monospace text-gold" font-size="8" text-anchor="middle">RANK</text>
+    <g transform="translate(295,90)">
+      <circle cx="0" cy="0" r="48" fill="none" stroke="{COLORS['gold']}" stroke-width="4.5" opacity="0.18"/>
+      <circle cx="0" cy="0" r="48" fill="none" stroke="{COLORS['gold']}" stroke-width="4.5"
+              stroke-dasharray="301" stroke-dashoffset="75" stroke-linecap="round"/>
+      <text x="0" y="10"  class="monospace text-gold" font-size="30" text-anchor="middle" font-weight="bold">{rank}</text>
+      <text x="0" y="66" class="monospace text-gold" font-size="12" text-anchor="middle">RANK</text>
     </g>
   </g>
 
@@ -1122,13 +1122,13 @@ def generate_dashboard_svg(header_elems, stack_elems, metrics_elems):
       stroke-dasharray: 6000;
       stroke-dashoffset: 6000;
       animation: drawPath 2.5s ease-out forwards;
-      animation-delay: 1.5s;
+      animation-delay: 0.5s;
     }}
     .chart-line-g2 {{
       stroke-dasharray: 6000;
       stroke-dashoffset: 6000;
       animation: drawPath 4.0s ease-out forwards;
-      animation-delay: 1.5s;
+      animation-delay: 0.5s;
     }}
     .chart-fill {{
       opacity: 0;

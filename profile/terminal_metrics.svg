@@ -48,27 +48,27 @@
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ GITHUB STATISTICS ]</text>
     <!-- Stats list -->
     <g transform="translate(15,35)" font-size="11" class="monospace">
-      <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="148" class="text-white" font-weight="normal">81</tspan></text>
-      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="148" class="text-white" font-weight="normal">6152</tspan></text>
-      <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="148" class="text-white" font-weight="normal">115</tspan></text>
-      <text x="0" y="76"  class="text-green" font-weight="bold">TOTAL ISSUES:<tspan x="148" class="text-white" font-weight="normal">6</tspan></text>
-      <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="148" class="text-white" font-weight="normal">27</tspan></text>
-      <text x="0" y="120" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="148" class="text-white" font-weight="normal">8 years ago</tspan></text>
+      <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="120" class="text-white" font-weight="normal">81</tspan></text>
+      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="120" class="text-white" font-weight="normal">6153</tspan></text>
+      <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="120" class="text-white" font-weight="normal">115</tspan></text>
+      <text x="0" y="76"  class="text-green" font-weight="bold">TOTAL ISSUES:<tspan x="120" class="text-white" font-weight="normal">6</tspan></text>
+      <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="120" class="text-white" font-weight="normal">27</tspan></text>
+      <text x="0" y="120" class="text-green" font-weight="bold">CREATED:<tspan x="120" class="text-white" font-weight="normal">8 years ago</tspan></text>
     </g>
     <!-- Rank badge (right column, vertically centered) -->
-    <g transform="translate(315,100)">
-      <circle cx="0" cy="0" r="32" fill="none" stroke="#c99a3a" stroke-width="3" opacity="0.18"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="#c99a3a" stroke-width="3"
-              stroke-dasharray="201" stroke-dashoffset="50" stroke-linecap="round"/>
-      <text x="0" y="7"  class="monospace text-gold" font-size="20" text-anchor="middle" font-weight="bold">A+</text>
-      <text x="0" y="44" class="monospace text-gold" font-size="8" text-anchor="middle">RANK</text>
+    <g transform="translate(295,90)">
+      <circle cx="0" cy="0" r="48" fill="none" stroke="#c99a3a" stroke-width="4.5" opacity="0.18"/>
+      <circle cx="0" cy="0" r="48" fill="none" stroke="#c99a3a" stroke-width="4.5"
+              stroke-dasharray="301" stroke-dashoffset="75" stroke-linecap="round"/>
+      <text x="0" y="10"  class="monospace text-gold" font-size="30" text-anchor="middle" font-weight="bold">A+</text>
+      <text x="0" y="66" class="monospace text-gold" font-size="12" text-anchor="middle">RANK</text>
     </g>
   </g>
 
   <rect x="400" y="42" width="383" height="200" fill="none" stroke="#7ab868" stroke-width="2"/>
   <g transform="translate(400,42)">
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ COMMITS - THIS YEAR ]</text>
-    <text x="363" y="22" class="monospace text-green" font-size="10" text-anchor="end" font-weight="bold">1170</text>
+    <text x="363" y="22" class="monospace text-green" font-size="10" text-anchor="end" font-weight="bold">1170 commits</text>
     <defs>
       <linearGradient id="chart-grad-ly" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#7ab868" stop-opacity="0.35"/>
