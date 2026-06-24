@@ -289,6 +289,90 @@ def generate_globe_html(x, y):
     {paths_xml}
 </g>"""
 
+def parse_github_stats():
+    commits = "5.1k"
+    repos = "24"
+    joined = "7 years ago"
+    prs = "101"
+    
+    paths = [
+        "profile-summary-card-output/default",
+        "profile-summary-card-output/vue",
+        "profile-summary-card-output/monokai",
+        "profile-summary-card-output/chartreuse_dark"
+    ]
+    
+    for base in paths:
+        details_path = os.path.join(base, "0-profile-details.svg")
+        stats_path = os.path.join(base, "3-stats.svg")
+        if os.path.exists(details_path) and os.path.exists(stats_path):
+            try:
+                tree = ET.parse(details_path)
+                root = tree.getroot()
+                texts = [t.text for t in root.findall(".//{http://www.w3.org/2000/svg}text") if t.text]
+                for txt in texts:
+                    if "Public Repos" in txt:
+                        repos = txt.split()[0]
+                    elif "Joined GitHub" in txt:
+                        joined = txt.replace("Joined GitHub ", "")
+                
+                tree_stats = ET.parse(stats_path)
+                root_stats = tree_stats.getroot()
+                y_to_label = {}
+                y_to_value = {}
+                for t in root_stats.findall(".//{http://www.w3.org/2000/svg}text"):
+                    x = t.get("x")
+                    y = t.get("y")
+                    txt = t.text
+                    if x == "21" and txt:
+                        y_to_label[y] = txt
+                    elif x == "130" and txt:
+                        y_to_value[y] = txt
+                
+                for y, label in y_to_label.items():
+                    val = y_to_value.get(y)
+                    if val:
+                        if "Total Commits" in label:
+                            commits = val
+                        elif "Total PRs" in label:
+                            prs = val
+                break
+            except Exception as e:
+                print(f"Error parsing base {base}: {e}")
+                
+    return commits, repos, joined, prs
+
+def parse_github_chart():
+    default_d = (
+        "M0,109.3C10.4,101.1,20.8,92.9,31.2,92.3C41.9,91.8,52.7,92.1,63.5,91.6"
+        "C74.2,91.0,85.0,5.1,95.7,5.1C106.1,5.1,116.6,28.0,127.0,38.2C137.7,48.6,148.5,60.1,159.2,66.8"
+        "C169.6,73.2,180.1,74.7,190.5,78.0C201.2,81.3,212.0,86.6,222.7,86.6C233.5,86.6,244.3,77.3,255.0,72.0"
+        "C264.7,67.1,274.5,60.0,284.2,56.4C294.9,52.3,305.7,50.2,316.4,50.2C326.9,50.2,337.3,90.2,347.7,90.2"
+        "C358.4,90.2,369.2,81.9,380.0,73.6L380.0,110.0L0.0,110.0Z"
+    )
+    
+    paths = [
+        "profile-summary-card-output/default",
+        "profile-summary-card-output/vue",
+        "profile-summary-card-output/monokai",
+        "profile-summary-card-output/chartreuse_dark"
+    ]
+    
+    for base in paths:
+        details_path = os.path.join(base, "0-profile-details.svg")
+        if os.path.exists(details_path):
+            try:
+                tree = ET.parse(details_path)
+                root = tree.getroot()
+                for p in root.findall(".//{http://www.w3.org/2000/svg}path"):
+                    d = p.get("d", "")
+                    if d.startswith("M0,") and "C" in d:
+                        return d
+            except Exception as e:
+                print(f"Error parsing base chart {base}: {e}")
+                
+    return default_d
+
 def get_grid_reveal_xml(width, height, start_delay):
     cols, rows = 4, 4
     cell_w = (width - 4) / cols
@@ -577,7 +661,52 @@ def generate_stack_xml_elements(embeds):
     return elements
 
 def generate_metrics_xml_elements():
-    details_xml = get_inline_svg_xml("profile-summary-card-output/chartreuse_dark/0-profile-details.svg", 17, 47, 766, 176)
+    commits, repos, joined, prs = parse_github_stats()
+    chart_d = parse_github_chart()
+    
+    import re
+    parts = re.split(r'L380(?:\.0)?,', chart_d)
+    stroke_d = parts[0] if parts else chart_d
+    
+    details_xml = f"""<g transform="translate(15, 45)">
+    <!-- Terminal Headers -->
+    <text x="15" y="30" class="monospace text-gold" font-size="15" font-weight="bold">&gt; GITHUB PROFILE STATUS</text>
+    
+    <!-- User Stats List -->
+    <g transform="translate(15, 60)" font-size="12" class="monospace">
+      <text x="0" y="0" class="text-green-dim">TOTAL COMMITS:<tspan x="150" class="text-white">{commits}</tspan></text>
+      <text x="0" y="22" class="text-green-dim">PUBLIC REPOS:<tspan x="150" class="text-white">{repos}</tspan></text>
+      <text x="0" y="44" class="text-green-dim">YEARS ACTIVE:<tspan x="150" class="text-white">{joined}</tspan></text>
+      <text x="0" y="66" class="text-green-dim">PULL REQUESTS:<tspan x="150" class="text-white">{prs}</tspan></text>
+    </g>
+
+    <!-- Glowing chart gradient definition -->
+    <defs>
+      <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="{COLORS['green']}" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="{COLORS['green']}" stop-opacity="0.0"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Custom Neon Commits Chart -->
+    <svg x="260" y="20" width="495" height="140" viewBox="0 0 380 110" preserveAspectRatio="none">
+      <!-- Cyberpunk Grid Lines -->
+      <line x1="0" y1="27.5" x2="380" y2="27.5" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
+      <line x1="0" y1="55" x2="380" y2="55" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
+      <line x1="0" y1="82.5" x2="380" y2="82.5" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
+      
+      <line x1="95" y1="0" x2="95" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
+      <line x1="190" y1="0" x2="190" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
+      <line x1="285" y1="0" x2="285" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
+
+      <!-- Chart Area Fill -->
+      <path d="{chart_d}" fill="url(#chart-grad)" stroke="none" class="chart-fill" />
+      
+      <!-- Chart Line Stroke -->
+      <path d="{stroke_d}" fill="none" stroke="{COLORS['green']}" stroke-width="2" class="chart-line" />
+    </svg>
+  </g>"""
+
     stats_xml = get_inline_svg_xml("profile/stats.svg", 17, 245, 407, 170)
     langs_xml = get_inline_svg_xml("profile/languages.svg", 474, 245, 309, 170)
 
@@ -643,6 +772,25 @@ def generate_dashboard_svg(header_elems, stack_elems, metrics_elems):
     @keyframes fadeOutCell {{
       0% {{ opacity: 1; }}
       100% {{ opacity: 0; }}
+    }}
+    @keyframes drawPath {{
+      from {{ stroke-dashoffset: 1200; }}
+      to {{ stroke-dashoffset: 0; }}
+    }}
+    @keyframes fadeInFill {{
+      from {{ opacity: 0; }}
+      to {{ opacity: 1; }}
+    }}
+    .chart-line {{
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+      animation: drawPath 2.5s ease-out forwards;
+      animation-delay: 1.5s;
+    }}
+    .chart-fill {{
+      opacity: 0;
+      animation: fadeInFill 1.5s ease-out forwards;
+      animation-delay: 3.5s;
     }}
   </style>
 
@@ -775,7 +923,28 @@ def main():
   </defs>
   <style>
     .monospace {{ font-family: monospace, Courier, fixed; }}
+    .text-green-dim {{ fill: {COLORS['green']}; opacity: 0.65; }}
     .text-gold {{ fill: {COLORS['gold']}; }}
+    .text-white {{ fill: {COLORS['white']}; }}
+    @keyframes drawPath {{
+      from {{ stroke-dashoffset: 1200; }}
+      to {{ stroke-dashoffset: 0; }}
+    }}
+    @keyframes fadeInFill {{
+      from {{ opacity: 0; }}
+      to {{ opacity: 1; }}
+    }}
+    .chart-line {{
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+      animation: drawPath 2.5s ease-out forwards;
+      animation-delay: 1.5s;
+    }}
+    .chart-fill {{
+      opacity: 0;
+      animation: fadeInFill 1.5s ease-out forwards;
+      animation-delay: 3.5s;
+    }}
   </style>
   <rect x="0" y="0" width="800" height="{m_height}" fill="{COLORS['background']}"/>
   <rect x="0" y="0" width="800" height="{m_height}" fill="url(#bg-grid)"/>

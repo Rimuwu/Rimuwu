@@ -29,16 +29,6 @@ jobs:
           path: profile/languages.svg
           token: ${{ secrets.ST_TOKEN }}
 
-      - name: Generate profile summary cards
-        uses: vn7n24fzkq/github-profile-summary-cards@release
-        env:
-          GITHUB_TOKEN: ${{ secrets.ST_TOKEN }}
-        with:
-          USERNAME: ${{ github.repository_owner }}
-          BRANCH_NAME: "main"
-          UTC_OFFSET: 3
-          AUTO_PUSH: false
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -51,6 +41,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add profile/*.svg profile-summary-card-output/**/*.svg
+          git add profile/*.svg
           git commit -m "Update README cards" || exit 0
           git push
