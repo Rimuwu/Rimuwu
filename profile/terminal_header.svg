@@ -12,7 +12,7 @@
   <rect x="2" y="2" width="796" height="40" fill="#051a08" stroke="#33cc66" stroke-width="2"/>
   <text x="20" y="26" class="monospace text-green" font-size="14" font-weight="bold">⚠️ WEYLAND-AW CORP</text>
   <text x="400" y="26" class="monospace text-green" font-size="14" font-weight="bold" text-anchor="middle">PLANETS AFFAIRS DATABASE</text>
-  <svg x="660" y="15" width="120" height="20" viewBox="0 0 120 20"><svg xmlns="http://www.w3.org/2000/svg" width="120" height="20" viewBox="0 0 120 20" x="660" y="15">
+  <svg xmlns="http://www.w3.org/2000/svg" width="120" height="20" viewBox="0 0 120 20" x="660" y="15">
   <style>
     @keyframes blink {
       0%, 100% { opacity: 0.1; }
@@ -27,7 +27,7 @@
     }
   </style>
   <text x="5" y="14" class="blinking-text">SYSTEM ONLINE</text>
-</svg></svg>
+</svg>
 
   <!-- Left Column: Citizen Data (Manually Wrapped Logs) -->
   <g transform="translate(20, 65)">
@@ -39,21 +39,16 @@
     <text x="0" y="100" class="monospace text-green" font-size="13" font-weight="bold">STATUS: <tspan fill="#55ff55">ACTIVE</tspan></text>
     
     <text x="0" y="130" class="monospace text-green" font-size="13" font-weight="bold">DATE OF BIRTH: <tspan class="text-white">7 FEB 2101</tspan></text>
-    <text x="0" y="150" class="monospace text-green" font-size="13" font-weight="bold">BIRTH PLACE: <tspan class="text-white">MARS</tspan></text>
+    <text x="0" y="150" class="monospace text-green" font-size="13" font-weight="bold">BIRTH PLACE: <tspan class="text-white">EARTH</tspan></text>
     
-    <text x="0" y="190" class="monospace text-gold" font-size="14" font-weight="bold">SYSTEM LOGS / OBJECTIVES:</text>
-    
-    <!-- Log 1: Japan Enthusiast -->
-    <text x="0" y="215" class="monospace text-gold" font-size="12">&gt; <tspan class="text-green">🎌 Japan Enthusiast:</tspan> Passionate about</text>
-    <text x="16" y="230" class="monospace text-green" font-size="12">Japanese culture, history, and aesthetics.</text>
-    
-    <!-- Log 2: Developer Journey -->
-    <text x="0" y="255" class="monospace text-gold" font-size="12">&gt; <tspan class="text-green">💻 Developer Journey:</tspan> Started with bots, now building</text>
-    <text x="16" y="270" class="monospace text-green" font-size="12">mods, websites, games, &amp; high-load apps.</text>
-    
-    <!-- Log 3: Current Projects -->
-    <text x="0" y="295" class="monospace text-gold" font-size="12">&gt; <tspan class="text-green">🦖 What about now:</tspan> Designing and developing custom</text>
-    <text x="16" y="310" class="monospace text-green" font-size="12">independent software systems.</text>
+    <text x="0" y="190" class="monospace text-gold" font-size="15" font-weight="bold">SYSTEM LOGS / OBJECTIVES:</text>
+    <text x="0" y="218" class="monospace text-gold" font-size="14">&gt; <tspan class="text-green">🎌 Japan Enthusiast:</tspan> Passionate about Japanese</text>
+    <text x="16" y="234" class="monospace text-gold" font-size="14">culture, history, and aesthetics.</text>
+    <text x="0" y="262" class="monospace text-gold" font-size="14">&gt; <tspan class="text-green">💻 Developer Journey:</tspan> Started with bots, now</text>
+    <text x="16" y="278" class="monospace text-gold" font-size="14">building mods, websites, games, &amp; high-load</text>
+    <text x="16" y="294" class="monospace text-gold" font-size="14">apps.</text>
+    <text x="0" y="322" class="monospace text-gold" font-size="14">&gt; <tspan class="text-green">🦖 What about now:</tspan> Designing and developing</text>
+    <text x="16" y="338" class="monospace text-gold" font-size="14">custom independent software systems.</text>
   </g>
 
   <!-- Right Column: Biometric Images (More Square Aspect Ratios) -->

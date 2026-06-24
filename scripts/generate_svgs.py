@@ -2,7 +2,13 @@ import os
 import base64
 import urllib.request
 import re
+import json
 import xml.etree.ElementTree as ET
+
+# Load configuration
+config_path = os.path.join(os.path.dirname(__file__), "config.json")
+with open(config_path, "r", encoding="utf-8") as f:
+    CONFIG = json.load(f)
 
 def get_base64_image(file_path):
     if not os.path.exists(file_path):
@@ -49,7 +55,6 @@ def get_inline_svg_xml(file_path, x, y, width, height):
             root.set('width', str(width))
             root.set('height', str(height))
             
-            # Ensure viewBox exists
             if 'viewBox' not in root.attrib:
                 w = root.get('width', '').replace('px', '').strip()
                 h = root.get('height', '').replace('px', '').strip()
@@ -77,44 +82,87 @@ def fetch_badge_base64(url):
         print(f"Error fetching badge {url}: {e}")
         return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=", 110
 
+def xml_escape(text):
+    return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&apos;')
+
+def wrap_log_text(title, text, max_chars=45):
+    title_len = len(title)
+    first_line_limit = max(15, max_chars - title_len)
+    
+    words = text.split(' ')
+    lines = []
+    current_line = []
+    current_length = 0
+    
+    for word in words:
+        limit = first_line_limit if not lines else max_chars
+        if current_length + len(word) + (1 if current_line else 0) > limit:
+            if current_line:
+                lines.append(' '.join(current_line))
+            current_line = [word]
+            current_length = len(word)
+        else:
+            current_line.append(word)
+            current_length += len(word) + (1 if len(current_line) > 1 else 0)
+    if current_line:
+        lines.append(' '.join(current_line))
+    return lines
+
 def generate_header_xml_elements():
     top_b64 = get_base64_image("images/top.jfif")
     left_b64 = get_base64_image("images/left.jpg")
     down_b64 = get_base64_image("images/down.jpg")
-    system_online_content = get_system_online_xml()
+    system_online_xml = get_system_online_xml()
+
+    profile = CONFIG["profile"]
+    log_h_size = CONFIG["fonts"]["log_header_font_size"]
+    log_t_size = CONFIG["fonts"]["log_text_font_size"]
+
+    # Generate logs HTML with automatic line wrapping
+    logs_html = ""
+    y_start = 218
+    for item in profile["logs"]:
+        title_esc = xml_escape(item["title"])
+        body_lines = wrap_log_text(item["title"], item["text"], max_chars=45)
+        
+        for idx, line in enumerate(body_lines):
+            line_esc = xml_escape(line)
+            if idx == 0:
+                logs_html += f'    <text x="0" y="{y_start}" class="monospace text-gold" font-size="{log_t_size}">&gt; <tspan class="text-green">{title_esc}</tspan> {line_esc}</text>\n'
+            else:
+                logs_html += f'    <text x="16" y="{y_start}" class="monospace text-gold" font-size="{log_t_size}">{line_esc}</text>\n'
+            y_start += 16
+        y_start += 12 # Gap between items
+
+    citizen_id_esc = xml_escape(profile["citizen_id"])
+    name_esc = xml_escape(profile["name"])
+    name_real_esc = xml_escape(profile["name_real"])
+    dept_esc = xml_escape(profile["dept"])
+    dept_desc_esc = xml_escape(profile["dept_desc"])
+    status_esc = xml_escape(profile["status"])
+    dob_esc = xml_escape(profile["dob"])
+    pob_esc = xml_escape(profile["pob"])
 
     return f"""  <!-- Header Bar -->
   <rect x="2" y="2" width="796" height="40" fill="#051a08" stroke="#33cc66" stroke-width="2"/>
   <text x="20" y="26" class="monospace text-green" font-size="14" font-weight="bold">⚠️ WEYLAND-AW CORP</text>
   <text x="400" y="26" class="monospace text-green" font-size="14" font-weight="bold" text-anchor="middle">PLANETS AFFAIRS DATABASE</text>
-  <svg x="660" y="15" width="120" height="20" viewBox="0 0 120 20">{system_online_content}</svg>
+  {system_online_xml}
 
   <!-- Left Column: Citizen Data (Manually Wrapped Logs) -->
   <g transform="translate(20, 65)">
-    <text x="0" y="20" class="monospace text-gold" font-size="18" font-weight="bold">CITIZEN ID: DV4</text>
+    <text x="0" y="20" class="monospace text-gold" font-size="18" font-weight="bold">CITIZEN ID: {citizen_id_esc}</text>
     <text x="0" y="35" class="monospace text-green" font-size="12">----------------------------------------</text>
     
-    <text x="0" y="60" class="monospace text-green" font-size="13" font-weight="bold">NAME: <tspan class="text-white">Rimuwu</tspan> (WARE, WYNDHAM FORREST)</text>
-    <text x="0" y="80" class="monospace text-green" font-size="13" font-weight="bold">DEPT: <tspan class="text-red">SALVAGE</tspan> (DEVELOPMENT &amp; DESIGN)</text>
-    <text x="0" y="100" class="monospace text-green" font-size="13" font-weight="bold">STATUS: <tspan fill="#55ff55">ACTIVE</tspan></text>
+    <text x="0" y="60" class="monospace text-green" font-size="13" font-weight="bold">NAME: <tspan class="text-white">{name_esc}</tspan> ({name_real_esc})</text>
+    <text x="0" y="80" class="monospace text-green" font-size="13" font-weight="bold">DEPT: <tspan class="text-red">{dept_esc}</tspan> ({dept_desc_esc})</text>
+    <text x="0" y="100" class="monospace text-green" font-size="13" font-weight="bold">STATUS: <tspan fill="#55ff55">{status_esc}</tspan></text>
     
-    <text x="0" y="130" class="monospace text-green" font-size="13" font-weight="bold">DATE OF BIRTH: <tspan class="text-white">7 FEB 2101</tspan></text>
-    <text x="0" y="150" class="monospace text-green" font-size="13" font-weight="bold">BIRTH PLACE: <tspan class="text-white">MARS</tspan></text>
+    <text x="0" y="130" class="monospace text-green" font-size="13" font-weight="bold">DATE OF BIRTH: <tspan class="text-white">{dob_esc}</tspan></text>
+    <text x="0" y="150" class="monospace text-green" font-size="13" font-weight="bold">BIRTH PLACE: <tspan class="text-white">{pob_esc}</tspan></text>
     
-    <text x="0" y="190" class="monospace text-gold" font-size="14" font-weight="bold">SYSTEM LOGS / OBJECTIVES:</text>
-    
-    <!-- Log 1: Japan Enthusiast -->
-    <text x="0" y="215" class="monospace text-gold" font-size="12">&gt; <tspan class="text-green">🎌 Japan Enthusiast:</tspan> Passionate about</text>
-    <text x="16" y="230" class="monospace text-green" font-size="12">Japanese culture, history, and aesthetics.</text>
-    
-    <!-- Log 2: Developer Journey -->
-    <text x="0" y="255" class="monospace text-gold" font-size="12">&gt; <tspan class="text-green">💻 Developer Journey:</tspan> Started with bots, now building</text>
-    <text x="16" y="270" class="monospace text-green" font-size="12">mods, websites, games, &amp; high-load apps.</text>
-    
-    <!-- Log 3: Current Projects -->
-    <text x="0" y="295" class="monospace text-gold" font-size="12">&gt; <tspan class="text-green">🦖 What about now:</tspan> Designing and developing custom</text>
-    <text x="16" y="310" class="monospace text-green" font-size="12">independent software systems.</text>
-  </g>
+    <text x="0" y="190" class="monospace text-gold" font-size="{log_h_size}" font-weight="bold">SYSTEM LOGS / OBJECTIVES:</text>
+{logs_html}  </g>
 
   <!-- Right Column: Biometric Images (More Square Aspect Ratios) -->
   <g transform="translate(460, 60)">
@@ -140,7 +188,7 @@ def generate_stack_xml_elements(embeds):
   <text x="20" y="20" class="monospace text-gold" font-size="13" font-weight="bold">[ ACTIVE MODULES &amp; TOOLKITS ]</text>
 
   <!-- Badges Grid Layout -->
-  <g transform="translate(20, 45)">
+  <g transform="translate(20, 42)">
 """
     x_offset = 0
     y_offset = 0
@@ -157,27 +205,28 @@ def generate_stack_xml_elements(embeds):
 
 def generate_metrics_xml_elements():
     details_xml = get_inline_svg_xml("profile-summary-card-output/chartreuse_dark/0-profile-details.svg", 17, 47, 766, 176)
-    stats_xml = get_inline_svg_xml("profile/stats.svg", 17, 247, 451, 191)
-    langs_xml = get_inline_svg_xml("profile/languages.svg", 487, 247, 296, 191)
+    stats_xml = get_inline_svg_xml("profile/stats.svg", 17, 245, 407, 170)
+    langs_xml = get_inline_svg_xml("profile/languages.svg", 474, 245, 309, 170)
 
     return f"""  <!-- Section Header -->
   <rect x="2" y="0" width="796" height="30" fill="#051a08" stroke="#33cc66" stroke-width="2"/>
   <text x="20" y="20" class="monospace text-gold" font-size="13" font-weight="bold">[ BIOMETRIC METRICS &amp; PERFORMANCE GRAPH ]</text>
 
-  <!-- Summary Card (Inlined) -->
+  <!-- Summary Card Bounding Box -->
   <rect x="15" y="45" width="770" height="180" fill="none" stroke="#33cc66" stroke-width="2"/>
   {details_xml}
 
-  <!-- Stats Card (Inlined) -->
-  <rect x="15" y="245" width="455" height="195" fill="none" stroke="#33cc66" stroke-width="2"/>
   {stats_xml}
 
-  <!-- Languages Card (Inlined) -->
-  <rect x="485" y="245" width="300" height="195" fill="none" stroke="#33cc66" stroke-width="2"/>
   {langs_xml}"""
 
 def generate_dashboard_svg(header_elems, stack_elems, metrics_elems):
-    svg_content = f"""<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1060" viewBox="0 0 800 1060">
+    h_height = CONFIG["layout"]["header_height"]
+    s_height = CONFIG["layout"]["stack_height"]
+    m_height = CONFIG["layout"]["metrics_height"]
+    total_height = h_height + s_height + m_height
+
+    svg_content = f"""<svg xmlns="http://www.w3.org/2000/svg" width="800" height="{total_height}" viewBox="0 0 800 {total_height}">
   <style>
     .monospace {{ font-family: monospace, Courier, fixed; }}
     .text-green {{ fill: #33cc66; }}
@@ -187,22 +236,22 @@ def generate_dashboard_svg(header_elems, stack_elems, metrics_elems):
   </style>
 
   <!-- Background and Full Borders -->
-  <rect x="0" y="0" width="800" height="1060" fill="#000000"/>
-  <rect x="0" y="0" width="800" height="1060" stroke="#33cc66" stroke-width="4" fill="none"/>
+  <rect x="0" y="0" width="800" height="{total_height}" fill="#000000"/>
+  <rect x="0" y="0" width="800" height="{total_height}" stroke="#33cc66" stroke-width="4" fill="none"/>
 
-  <!-- Part 1: Header (0 to 450) -->
+  <!-- Part 1: Header (0 to {h_height}) -->
   <g transform="translate(0, 0)">
 {header_elems}
   </g>
 
-  <!-- Part 2: Stack (450 to 600) -->
-  <g transform="translate(0, 450)">
+  <!-- Part 2: Stack ({h_height} to {h_height + s_height}) -->
+  <g transform="translate(0, {h_height})">
     <line x1="0" y1="0" x2="800" y2="0" stroke="#33cc66" stroke-width="2"/>
 {stack_elems}
   </g>
 
-  <!-- Part 3: Metrics (600 to 1060) -->
-  <g transform="translate(0, 600)">
+  <!-- Part 3: Metrics ({h_height + s_height} to {total_height}) -->
+  <g transform="translate(0, {h_height + s_height})">
     <line x1="0" y1="0" x2="800" y2="0" stroke="#33cc66" stroke-width="2"/>
 {metrics_elems}
   </g>
@@ -216,20 +265,7 @@ def main():
     os.makedirs("profile", exist_ok=True)
     
     # 1. Fetch Stack badges
-    badges = [
-        "https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white",
-        "https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white",
-        "https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white",
-        "https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white",
-        "https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white",
-        "https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black",
-        "https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D",
-        "https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white",
-        "https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white",
-        "https://img.shields.io/badge/Figma-0ACF83?style=for-the-badge&logo=figma&logoColor=white",
-        "https://img.shields.io/badge/GDScript-478CBF?style=for-the-badge&logo=godot-engine&logoColor=white",
-        "https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white"
-    ]
+    badges = CONFIG["badges"]
     embeds = []
     for url in badges:
         b64, width = fetch_badge_base64(url)
@@ -241,7 +277,11 @@ def main():
     metrics_elems = generate_metrics_xml_elements()
 
     # 3. Generate individual standalone files (for compatibility)
-    header_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+    h_height = CONFIG["layout"]["header_height"]
+    s_height = CONFIG["layout"]["stack_height"]
+    m_height = CONFIG["layout"]["metrics_height"]
+
+    header_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="800" height="{h_height}" viewBox="0 0 800 {h_height}">
   <style>
     .monospace {{ font-family: monospace, Courier, fixed; }}
     .text-green {{ fill: #33cc66; }}
@@ -249,33 +289,33 @@ def main():
     .text-white {{ fill: #ffffff; }}
     .text-red {{ fill: #ff5555; }}
   </style>
-  <rect x="0" y="0" width="800" height="450" fill="#000000"/>
-  <path d="M 0,450 L 0,0 L 800,0 L 800,450" stroke="#33cc66" stroke-width="4" fill="none"/>
+  <rect x="0" y="0" width="800" height="{h_height}" fill="#000000"/>
+  <path d="M 0,{h_height} L 0,0 L 800,0 L 800,{h_height}" stroke="#33cc66" stroke-width="4" fill="none"/>
 {header_elems}
 </svg>"""
     with open("profile/terminal_header.svg", "w", encoding="utf-8") as f:
         f.write(header_svg)
 
-    stack_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="800" height="150" viewBox="0 0 800 150">
+    stack_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="800" height="{s_height}" viewBox="0 0 800 {s_height}">
   <style>
     .monospace {{ font-family: monospace, Courier, fixed; }}
     .text-gold {{ fill: #ffcc00; }}
   </style>
-  <rect x="0" y="0" width="800" height="150" fill="#000000"/>
-  <line x1="0" y1="0" x2="0" y2="150" stroke="#33cc66" stroke-width="4"/>
-  <line x1="800" y1="0" x2="800" y2="150" stroke="#33cc66" stroke-width="4"/>
+  <rect x="0" y="0" width="800" height="{s_height}" fill="#000000"/>
+  <line x1="0" y1="0" x2="0" y2="{s_height}" stroke="#33cc66" stroke-width="4"/>
+  <line x1="800" y1="0" x2="800" y2="{s_height}" stroke="#33cc66" stroke-width="4"/>
 {stack_elems}
 </svg>"""
     with open("profile/terminal_stack.svg", "w", encoding="utf-8") as f:
         f.write(stack_svg)
 
-    metrics_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="800" height="460" viewBox="0 0 800 460">
+    metrics_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="800" height="{m_height}" viewBox="0 0 800 {m_height}">
   <style>
     .monospace {{ font-family: monospace, Courier, fixed; }}
     .text-gold {{ fill: #ffcc00; }}
   </style>
-  <rect x="0" y="0" width="800" height="460" fill="#000000"/>
-  <path d="M 0,0 L 0,460 L 800,460 L 800,0" stroke="#33cc66" stroke-width="4" fill="none"/>
+  <rect x="0" y="0" width="800" height="{m_height}" fill="#000000"/>
+  <path d="M 0,0 L 0,{m_height} L 800,{m_height} L 800,0" stroke="#33cc66" stroke-width="4" fill="none"/>
 {metrics_elems}
 </svg>"""
     with open("profile/terminal_metrics.svg", "w", encoding="utf-8") as f:
