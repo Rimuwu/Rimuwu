@@ -398,9 +398,11 @@ def parse_github_stats_and_chart():
                 pullRequests {{
                   totalCount
                 }}
-                repositories(first: 100, ownerAffiliations: OWNER, isFork: false, privacy: PUBLIC, orderBy: {{field: STARGAZERS, direction: DESC}}) {{
+                repositories(first: 100, ownerAffiliations: OWNER, isFork: false, orderBy: {{field: STARGAZERS, direction: DESC}}) {{
                   nodes {{
                     name
+                    isPrivate
+                    isArchived
                     stargazerCount
                     primaryLanguage {{
                       name
@@ -472,7 +474,11 @@ def parse_github_stats_and_chart():
                     if langs_list:
                         languages = langs_list
                         
-                    sorted_repos = sorted(repos_nodes, key=lambda x: x.get("stargazerCount", 0), reverse=True)
+                    # Top repos: only public and non-archived
+                    sorted_repos = sorted(
+                        [r for r in repos_nodes if not r.get("isPrivate") and not r.get("isArchived")],
+                        key=lambda x: x.get("stargazerCount", 0), reverse=True
+                    )
                     top_repos_list = []
                     for r in sorted_repos[:4]:
                         r_name = r.get("name")
@@ -909,10 +915,10 @@ def generate_metrics_xml_elements():
     # Year-commits sum for Graph 1 label
     g1_total = sum(g1_vals)
 
-    # ── Language # bars (4 langs, full-width, 30px step) ─────────────
+    # ── Language # bars (top 3, full-width, 30px step) ─────────────
     BAR_CHARS = 40
     BAR_W     = 335
-    top_langs = languages[:4]
+    top_langs = languages[:3]
     langs_xml = ""
     for idx, (l_name, l_pct, l_col) in enumerate(top_langs):
         y_lbl  = 48 + idx * 30
@@ -964,8 +970,8 @@ def generate_metrics_xml_elements():
   <!-- ═══ ROW 1: GitHub Stats (left) + Graph 1 This Year (right) ═══ -->
   <rect x="15" y="42" width="375" height="200" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
   <g transform="translate(15,42)">
-    <text x="188" y="20" class="monospace text-green-dim" font-size="9" text-anchor="middle">[ GITHUB STATISTICS ]</text>
-    <!-- Stats list (left column) -->
+    <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ GITHUB STATISTICS ]</text>
+    <!-- Stats list -->
     <g transform="translate(15,35)" font-size="11" class="monospace">
       <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="148" class="text-white" font-weight="normal">{stars}</tspan></text>
       <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="148" class="text-white" font-weight="normal">{commits}</tspan></text>
