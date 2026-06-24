@@ -22,7 +22,32 @@ config_path = os.path.join(os.path.dirname(__file__), "config.json")
 with open(config_path, "r", encoding="utf-8") as f:
     CONFIG = json.load(f)
 
-COLORS = CONFIG.get("colors", {
+oh = CONFIG.get("online_hours", {"utc_offset": 3, "start": 10, "end": 23})
+utc_offset = oh.get("utc_offset", 3)
+start_hour = oh.get("start", 10)
+end_hour = oh.get("end", 23)
+
+now_utc = datetime.utcnow()
+now_local = now_utc + timedelta(hours=utc_offset)
+current_hour = now_local.hour
+
+def check_online_status():
+    is_online = start_hour <= current_hour < end_hour
+
+    hours_left = 0
+    if not is_online:
+        if current_hour < start_hour:
+            hours_left = start_hour - current_hour
+        else:
+            hours_left = (24 - current_hour) + start_hour
+
+    return is_online, hours_left
+
+is_online, hours_left = check_online_status()
+
+THEME = 'night' if not is_online else 'day'
+
+COLORS = CONFIG.get('themes', {}).get(THEME, {
     "background": "#000000",
     "green": "#33cc66",
     "gold": "#ffcc00",
@@ -82,28 +107,6 @@ def parse_dob(dob_str):
             except ValueError:
                 pass
     return None
-
-def check_online_status():
-    oh = CONFIG.get("online_hours", {"utc_offset": 3, "start": 10, "end": 23})
-    utc_offset = oh.get("utc_offset", 3)
-    start_hour = oh.get("start", 10)
-    end_hour = oh.get("end", 23)
-    
-    # Get current UTC time, then apply offset to get local time
-    now_utc = datetime.utcnow()
-    now_local = now_utc + timedelta(hours=utc_offset)
-    current_hour = now_local.hour
-    
-    is_online = start_hour <= current_hour < end_hour
-    
-    hours_left = 0
-    if not is_online:
-        if current_hour < start_hour:
-            hours_left = start_hour - current_hour
-        else:
-            hours_left = (24 - current_hour) + start_hour
-            
-    return is_online, hours_left
 
 def get_system_online_xml(is_online):
     if is_online:
@@ -915,13 +918,13 @@ def generate_metrics_xml_elements():
     # Year-commits sum for Graph 1 label
     g1_total = sum(g1_vals)
 
-    # ── Language # bars (top 3, full-width, 30px step) ─────────────
+    # ── Language # bars (top 3, full-width, 40px step) ─────────────
     BAR_CHARS = 40
     BAR_W     = 335
     top_langs = languages[:3]
     langs_xml = ""
     for idx, (l_name, l_pct, l_col) in enumerate(top_langs):
-        y_lbl  = 48 + idx * 30
+        y_lbl  = 48 + idx * 35
         y_bar  = y_lbl + 14
         filled = max(0, min(BAR_CHARS, round((l_pct / 100.0) * BAR_CHARS)))
         empty  = BAR_CHARS - filled
@@ -947,7 +950,7 @@ def generate_metrics_xml_elements():
     repos_xml = ""
     for ri in range(4):
         if ri < len(real_repos):
-            rname  = xml_escape(trunc(real_repos[ri][0]))
+            rname  = xml_escape(trunc(real_repos[ri][0], mx=30))
             rstars = real_repos[ri][1]
             rlang  = xml_escape(real_repos[ri][2] or "?")
         else:
@@ -958,7 +961,7 @@ def generate_metrics_xml_elements():
             f' class="monospace text-green" font-weight="bold">{rname}</text>'
             f'\n      <text x="230" y="{y_r}" font-size="11.5"'
             f' class="monospace text-gold">&#x2605; {rstars}</text>'
-            f'\n      <text x="280" y="{y_r}" font-size="10"'
+            f'\n      <text x="300" y="{y_r}" font-size="10"'
             f' class="monospace text-white" opacity="0.55">[{rlang}]</text>'
         )
 

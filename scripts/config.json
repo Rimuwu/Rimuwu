@@ -9,17 +9,31 @@
     "start": 10,
     "end": 20
   },
-  "colors": {
-    "background": "#000000",
-    "green": "#33cc66",
-    "gold": "#ffcc00",
-    "white": "#ffffff",
-    "red": "#ff5555",
-    "header_fill": "#051a08",
-    "status_active": "#55ff55",
-    "status_standby": "#ff5555",
-    "fallback_fill": "#111111",
-    "grid_opacity": 0.25
+  "themes": {
+    "day": {
+      "background": "#0b1410",
+      "green": "#4dbb7a",
+      "gold": "#c9a84c",
+      "white": "#d4e8d4",
+      "red": "#c05c5c",
+      "header_fill": "#111f16",
+      "status_active": "#4dbb7a",
+      "status_standby": "#c05c5c",
+      "fallback_fill": "#161e19",
+      "grid_opacity": 0.25
+    },
+    "night": {
+      "background": "#110e06",
+      "green": "#7ab868",
+      "gold": "#c99a3a",
+      "white": "#e8dfc0",
+      "red": "#c06060",
+      "header_fill": "#1a1508",
+      "status_active": "#7ab868",
+      "status_standby": "#c06060",
+      "fallback_fill": "#181306",
+      "grid_opacity": 0.20
+    }
   },
   "fonts": {
     "log_header_font_size": 15,
