@@ -7,6 +7,16 @@ import json
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, date
 
+# ── Load .env if present (for local development) ───────────────────────
+_env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
+if os.path.isfile(_env_path):
+    with open(_env_path, "r", encoding="utf-8") as _ef:
+        for _line in _ef:
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _k, _v = _line.split("=", 1)
+                os.environ.setdefault(_k.strip(), _v.strip())
+
 # Load configuration
 config_path = os.path.join(os.path.dirname(__file__), "config.json")
 with open(config_path, "r", encoding="utf-8") as f:
@@ -351,7 +361,7 @@ def parse_github_stats_and_chart():
             user_url = f"https://api.github.com/users/{username}"
             req = urllib.request.Request(user_url, headers=req_headers)
             created_year = datetime.now().year - 7
-            with urllib.request.urlopen(req, timeout=5) as res:
+            with urllib.request.urlopen(req, timeout=20) as res:
                 user_data = json.loads(res.read().decode("utf-8"))
                 repos = str(user_data.get("public_repos", repos))
                 created_at_str = user_data.get("created_at")
@@ -423,7 +433,7 @@ def parse_github_stats_and_chart():
             
             gql_data = json.dumps({"query": query, "variables": {"username": username}}).encode("utf-8")
             gql_req = urllib.request.Request("https://api.github.com/graphql", data=gql_data, headers=req_headers, method="POST")
-            with urllib.request.urlopen(gql_req, timeout=5) as res:
+            with urllib.request.urlopen(gql_req, timeout=20) as res:
                 result = json.loads(res.read().decode("utf-8"))
                 user_res = result.get("data", {}).get("user", {})
                 if user_res:
@@ -899,14 +909,14 @@ def generate_metrics_xml_elements():
     # Year-commits sum for Graph 1 label
     g1_total = sum(g1_vals)
 
-    # ── Language # bars (4 langs, full-width) ────────────────────────
+    # ── Language # bars (4 langs, full-width, 30px step) ─────────────
     BAR_CHARS = 40
     BAR_W     = 335
     top_langs = languages[:4]
     langs_xml = ""
     for idx, (l_name, l_pct, l_col) in enumerate(top_langs):
-        y_lbl  = 52 + idx * 27
-        y_bar  = y_lbl + 13
+        y_lbl  = 48 + idx * 30
+        y_bar  = y_lbl + 14
         filled = max(0, min(BAR_CHARS, round((l_pct / 100.0) * BAR_CHARS)))
         empty  = BAR_CHARS - filled
         hash_s = "#" * filled
@@ -955,6 +965,7 @@ def generate_metrics_xml_elements():
   <rect x="15" y="42" width="375" height="200" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
   <g transform="translate(15,42)">
     <text x="188" y="20" class="monospace text-green-dim" font-size="9" text-anchor="middle">[ GITHUB STATISTICS ]</text>
+    <!-- Stats list (left column) -->
     <g transform="translate(15,35)" font-size="11" class="monospace">
       <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="148" class="text-white" font-weight="normal">{stars}</tspan></text>
       <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="148" class="text-white" font-weight="normal">{commits}</tspan></text>
@@ -963,11 +974,13 @@ def generate_metrics_xml_elements():
       <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="148" class="text-white" font-weight="normal">{contribs}</tspan></text>
       <text x="0" y="120" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="148" class="text-white" font-weight="normal">{joined}</tspan></text>
     </g>
-    <g transform="translate(188,160)">
-      <circle cx="0" cy="0" r="28" fill="none" stroke="{COLORS['gold']}" stroke-width="3" opacity="0.2"/>
-      <circle cx="0" cy="0" r="28" fill="none" stroke="{COLORS['gold']}" stroke-width="3" stroke-dasharray="176" stroke-dashoffset="44" stroke-linecap="round"/>
-      <text x="0" y="7"  class="monospace text-gold" font-size="17" text-anchor="middle" font-weight="bold">{rank}</text>
-      <text x="0" y="40" class="monospace text-gold" font-size="7.5" text-anchor="middle">RANK</text>
+    <!-- Rank badge (right column, vertically centered) -->
+    <g transform="translate(315,100)">
+      <circle cx="0" cy="0" r="32" fill="none" stroke="{COLORS['gold']}" stroke-width="3" opacity="0.18"/>
+      <circle cx="0" cy="0" r="32" fill="none" stroke="{COLORS['gold']}" stroke-width="3"
+              stroke-dasharray="201" stroke-dashoffset="50" stroke-linecap="round"/>
+      <text x="0" y="7"  class="monospace text-gold" font-size="20" text-anchor="middle" font-weight="bold">{rank}</text>
+      <text x="0" y="44" class="monospace text-gold" font-size="8" text-anchor="middle">RANK</text>
     </g>
   </g>
 
@@ -1003,7 +1016,7 @@ def generate_metrics_xml_elements():
     {repos_xml}
   </g>
 
-  <!-- ═══ ROW 3: Last 4 Years Graph + All-Time Stats ═══ -->
+  <!-- ═══ ROW 3: Last 4 Years Graph + All-Time Stats (right sidebar) ═══ -->
   <rect x="15" y="426" width="770" height="207" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
   <g transform="translate(15,426)">
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ CONTRIBUTION GRAPH - LAST 4 YEARS ]</text>
@@ -1013,6 +1026,7 @@ def generate_metrics_xml_elements():
         <stop offset="100%" stop-color="{COLORS['green']}" stop-opacity="0.0"/>
       </linearGradient>
     </defs>
+    <!-- Chart: x=15 y=30, width={G2_W}=540, height=165 → right edge at x=555 -->
     <svg x="15" y="30" width="{G2_W}" height="165" viewBox="0 0 {G2_W} 165" preserveAspectRatio="none">
       <line x1="0" y1="{int(G2_H*0.33)}" x2="{G2_W}" y2="{int(G2_H*0.33)}" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
       <line x1="0" y1="{int(G2_H*0.66)}" x2="{G2_W}" y2="{int(G2_H*0.66)}" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
@@ -1020,18 +1034,19 @@ def generate_metrics_xml_elements():
       <path d="{g2_fill}" fill="url(#chart-grad-at)" stroke="none" class="chart-fill"/>
       <path d="{g2_stroke}" fill="none" stroke="{COLORS['green']}" stroke-width="2" class="chart-line-g2"/>
     </svg>
-    <!-- All-time stats sidebar -->
-    <g transform="translate(572,38)" font-size="10" class="monospace">
-      <text x="0" y="0"  class="text-green-dim" font-size="8.5" font-weight="bold">ALL-TIME STATS</text>
-      <text x="0" y="22" class="text-green">COMMITS:</text>
-      <text x="0" y="36" class="text-white" font-size="13" font-weight="bold">{alltime_commits}</text>
-      <text x="0" y="62" class="text-green">PEAK / WK:</text>
-      <text x="0" y="76" class="text-white" font-size="13" font-weight="bold">{alltime_peak}</text>
-      <text x="0" y="102" class="text-green">ACTIVE YRS:</text>
-      <text x="0" y="116" class="text-white" font-size="13" font-weight="bold">{alltime_years}</text>
-      <text x="0" y="142" class="text-green">WEEKS:</text>
-      <text x="0" y="156" class="text-white" font-size="13" font-weight="bold">{alltime_weeks}</text>
-    </g>
+    <!-- All-time stats: 2×2 grid to the right of chart, x=560 within this group -->
+    <line x1="560" y1="28" x2="560" y2="198" stroke="{COLORS['green']}" stroke-width="1" opacity="0.25"/>
+    <text x="572" y="44" class="monospace text-green-dim" font-size="8" font-weight="bold">ALL-TIME STATS</text>
+    <!-- col1 -->
+    <text x="572" y="68"  class="monospace text-green" font-size="9">TOTAL COMMITS</text>
+    <text x="572" y="84"  class="monospace text-white" font-size="15" font-weight="bold">{alltime_commits}</text>
+    <text x="572" y="114" class="monospace text-green" font-size="9">PEAK / WK</text>
+    <text x="572" y="130" class="monospace text-white" font-size="15" font-weight="bold">{alltime_peak}</text>
+    <!-- col2 -->
+    <text x="670" y="68"  class="monospace text-green" font-size="9">ACTIVE YRS</text>
+    <text x="670" y="84"  class="monospace text-white" font-size="15" font-weight="bold">{alltime_years}</text>
+    <text x="670" y="114" class="monospace text-green" font-size="9">TOTAL WEEKS</text>
+    <text x="670" y="130" class="monospace text-white" font-size="15" font-weight="bold">{alltime_weeks}</text>
   </g>"""
 
 
