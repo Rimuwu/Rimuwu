@@ -524,8 +524,8 @@
       <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="148" class="text-white" font-weight="normal">1465</tspan></text>
       <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="148" class="text-white" font-weight="normal">115</tspan></text>
       <text x="0" y="76"  class="text-green" font-weight="bold">TOTAL ISSUES:<tspan x="148" class="text-white" font-weight="normal">6</tspan></text>
-      <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="148" class="text-white" font-weight="normal">24</tspan></text>
-      <text x="0" y="120" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="148" class="text-white" font-weight="normal">7 years ago</tspan></text>
+      <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="148" class="text-white" font-weight="normal">27</tspan></text>
+      <text x="0" y="120" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="148" class="text-white" font-weight="normal">8 years ago</tspan></text>
     </g>
     <g transform="translate(308,100)">
       <circle cx="0" cy="0" r="34" fill="none" stroke="#ffcc00" stroke-width="4" opacity="0.2"/>
