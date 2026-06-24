@@ -1,11 +1,11 @@
 <table align="center" width="100%" bgcolor="#000000" style="border: 2px solid #33cc66; font-family: monospace; color: #33cc66; border-collapse: collapse;">
   <tr bgcolor="#051a08">
-    <td colspan="2" style="border-bottom: 2px solid #33cc66; padding: 12px; font-family: monospace;">
-      <table width="100%" style="border: none; border-collapse: collapse;">
+    <td colspan="2" style="border-bottom: 2px solid #33cc66; padding: 0; font-family: monospace;">
+      <table width="100%" style="border: none; border-collapse: collapse; margin: 0; padding: 0;">
         <tr style="border: none;">
-          <td align="left" style="border: none;"><font color="#33cc66"><b>⚠️ WEYLAND-AW CORP</b></font></td>
-          <td align="center" style="border: none;"><font color="#33cc66"><b>PLANETS AFFAIRS DATABASE</b></font></td>
-          <td align="right" style="border: none; vertical-align: middle;"><img src="./images/system_online.svg" height="14" alt="SYSTEM ONLINE" style="vertical-align: middle;"/></td>
+          <td align="left" style="border: none; padding: 12px 20px;"><font color="#33cc66"><samp><b>⚠️ WEYLAND-AW CORP</b></samp></font></td>
+          <td align="center" style="border: none; padding: 12px 0;"><font color="#33cc66"><samp><b>PLANETS AFFAIRS DATABASE</b></samp></font></td>
+          <td align="right" style="border: none; padding: 12px 20px; vertical-align: middle;"><img src="./images/system_online.svg" height="14" alt="SYSTEM ONLINE" style="vertical-align: middle;"/></td>
         </tr>
       </table>
     </td>
@@ -13,21 +13,23 @@
   <tr>
     <!-- Profile Info -->
     <td width="55%" valign="top" style="padding: 20px; font-family: monospace; line-height: 1.6; border-right: 2px solid #33cc66;">
-      <font color="#ffcc00" size="4"><b>CITIZEN ID: DV4</b></font>
-      <br/>
-      <font color="#33cc66">----------------------------------------</font>
-      <br/>
-      <b>NAME:</b> <font color="#ffffff">Rimuwu</font> (WARE, WYNDHAM FORREST)<br/>
-      <b>DEPT:</b> <font color="#ff5555">SALVAGE</font> (DEVELOPMENT & DESIGN)<br/>
-      <b>STATUS:</b> <font color="#55ff55">ACTIVE</font>
-      <br/><br/>
-      <b>DATE OF BIRTH:</b> 7 FEB 2101<br/>
-      <b>BIRTH PLACE:</b> MARS<br/>
-      <br/><br/>
-      <b>SYSTEM LOGS / OBJECTIVES:</b><br/>
-      <font color="#ffcc00">> 🎌 Japan Enthusiast:</font> Passionate about Japanese culture, history, and aesthetics.<br/>
-      <font color="#ffcc00">> 💻 Developer Journey:</font> Started with bots, now building mods, websites, games, and high-load apps.<br/>
-      <font color="#ffcc00">> 🦖 What about now:</font> Designing and developing custom independent software.
+      <samp>
+        <font color="#ffcc00" size="4"><b>CITIZEN ID: DV4</b></font>
+        <br/>
+        <font color="#33cc66">----------------------------------------</font>
+        <br/>
+        <b>NAME:</b> <font color="#ffffff">AS1</font> (WARE, WYNDHAM FORREST)<br/>
+        <b>DEPT:</b> <font color="#ff5555">SALVAGE</font> (DEVELOPMENT & DESIGN)<br/>
+        <b>STATUS:</b> <font color="#55ff55">ACTIVE</font>
+        <br/><br/>
+        <b>DATE OF BIRTH:</b> 7 FEB 2101<br/>
+        <b>BIRTH PLACE:</b> EARTH<br/>
+        <br/><br/>
+        <b>SYSTEM LOGS / OBJECTIVES:</b><br/>
+        <font color="#ffcc00">> 🎌 Japan Enthusiast:</font> Passionate about Japanese culture, history, and aesthetics.<br/>
+        <font color="#ffcc00">> 💻 Developer Journey:</font> Started with bots, now building mods, websites, games, and high-load apps.<br/>
+        <font color="#ffcc00">> 🦖 What about now:</font> Designing and developing custom independent software.
+      </samp>
     </td>
     <!-- Photos -->
     <td width="45%" align="center" valign="top" style="padding: 20px;">
@@ -37,13 +39,13 @@
         <img src="./images/down.jpg" width="48%" alt="Down Angle" style="border: 2px solid #33cc66; display: inline-block;"/>
       </div>
       <br/>
-      <font color="#33cc66" size="2"><b>SUBJECT BIOMETRIC IMAGES</b></font>
+      <font color="#33cc66" size="2"><samp><b>SUBJECT BIOMETRIC IMAGES</b></samp></font>
     </td>
   </tr>
   <!-- Section: Tech Stack Header -->
   <tr bgcolor="#051a08" style="border-top: 2px solid #33cc66; border-bottom: 2px solid #33cc66;">
     <td colspan="2" style="padding: 10px; font-family: monospace;">
-      <font color="#ffcc00"><b>[ ACTIVE MODULES & TOOLKITS ]</b></font>
+      <font color="#ffcc00"><samp><b>[ ACTIVE MODULES & TOOLKITS ]</b></samp></font>
     </td>
   </tr>
   <!-- Content: Tech Stack -->
@@ -66,17 +68,19 @@
   <!-- Section: Stats Header -->
   <tr bgcolor="#051a08" style="border-top: 2px solid #33cc66; border-bottom: 2px solid #33cc66;">
     <td colspan="2" style="padding: 10px; font-family: monospace;">
-      <font color="#ffcc00"><b>[ BIOMETRIC METRICS & PERFORMANCE GRAPH ]</b></font>
+      <font color="#ffcc00"><samp><b>[ BIOMETRIC METRICS & PERFORMANCE GRAPH ]</b></samp></font>
     </td>
   </tr>
   <!-- Content: Stats -->
   <tr>
-    <td colspan="2" style="padding: 20px; font-family: monospace;" align="center">
-      <img src="./profile-summary-card-output/monokai/profile-details.svg" alt="Profile Details" width="100%" style="margin-bottom: 10px; border: 1px solid #33cc66; display: block;"/>
-      <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%;">
-        <img src="./profile/stats.svg" alt="GitHub Stats" width="49%" style="border: 1px solid #33cc66; display: inline-block;"/>
-        <img src="./profile/languages.svg" alt="Top Languages" width="49%" style="border: 1px solid #33cc66; display: inline-block;"/>
-      </div>
+    <td colspan="2" style="padding: 8px 12px; font-family: monospace;" align="center">
+      <img src="./profile-summary-card-output/chartreuse_dark/0-profile-details.svg" alt="Profile Details" width="100%" style="margin-bottom: 12px; border: 1px solid #33cc66; display: block;"/>
+      <table width="100%" style="border: none; border-collapse: collapse; margin: 0; padding: 0;">
+        <tr style="border: none;">
+          <td align="left" style="border: none; padding: 0;"><img src="./profile/stats.svg" alt="GitHub Stats" height="165" style="border: 1px solid #33cc66;"/></td>
+          <td align="right" style="border: none; padding: 0;"><img src="./profile/languages.svg" alt="Top Languages" height="165" style="border: 1px solid #33cc66;"/></td>
+        </tr>
+      </table>
     </td>
   </tr>
 </table>
