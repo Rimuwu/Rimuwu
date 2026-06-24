@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="20" viewBox="0 0 120 20">
+  <style>
+    @keyframes blink {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 1; }
+    }
+    .blinking-text {
+      font-family: monospace;
+      font-weight: bold;
+      fill: #33cc66;
+      font-size: 14px;
+      animation: blink 1.5s steps(2, start) infinite;
+    }
+  </style>
+  <text x="5" y="14" class="blinking-text">SYSTEM ONLINE</text>
+</svg>
