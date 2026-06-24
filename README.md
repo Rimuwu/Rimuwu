@@ -11,7 +11,8 @@
     </td>
   </tr>
   <tr>
-    <td width="60%" valign="top" style="padding: 20px; font-family: monospace; line-height: 1.6; border-right: 2px solid #33cc66;">
+    <!-- Profile Info -->
+    <td width="55%" valign="top" style="padding: 20px; font-family: monospace; line-height: 1.6; border-right: 2px solid #33cc66;">
       <font color="#ffcc00" size="4"><b>CITIZEN ID: DV4</b></font>
       <br/>
       <font color="#33cc66">----------------------------------------</font>
@@ -28,26 +29,24 @@
       <font color="#ffcc00">> 💻 Developer Journey:</font> Started with bots, now building mods, websites, games, and high-load apps.<br/>
       <font color="#ffcc00">> 🦖 What about now:</font> Designing and developing custom independent software.
     </td>
-    <td width="40%" align="center" valign="middle" style="padding: 20px;">
-      <img src="./images/top.jfif" width="100%" alt="Wyndham Forrest Profile" style="border: 2px solid #33cc66; margin-bottom: 10px;"/>
-      <table width="100%" style="border: none; border-collapse: collapse;">
-        <tr style="border: none;">
-          <td width="50%" align="center" style="border: none; padding: 0 5px 0 0;">
-            <img src="./images/left.jpg" width="100%" alt="Left Angle" style="border: 2px solid #33cc66;"/>
-          </td>
-          <td width="50%" align="center" style="border: none; padding: 0 0 0 5px;">
-            <img src="./images/down.jpg" width="100%" alt="Down Angle" style="border: 2px solid #33cc66;"/>
-          </td>
-        </tr>
-      </table>
+    <!-- Photos -->
+    <td width="45%" align="center" valign="top" style="padding: 20px;">
+      <img src="./images/top.jfif" width="100%" alt="Wyndham Forrest Profile" style="border: 2px solid #33cc66; display: block; margin-bottom: 8px;"/>
+      <div style="display: flex; justify-content: space-between; gap: 4px;">
+        <img src="./images/left.jpg" width="48%" alt="Left Angle" style="border: 2px solid #33cc66; display: inline-block;"/>
+        <img src="./images/down.jpg" width="48%" alt="Down Angle" style="border: 2px solid #33cc66; display: inline-block;"/>
+      </div>
+      <br/>
       <font color="#33cc66" size="2"><b>SUBJECT BIOMETRIC IMAGES</b></font>
     </td>
   </tr>
+  <!-- Section: Tech Stack Header -->
   <tr bgcolor="#051a08" style="border-top: 2px solid #33cc66; border-bottom: 2px solid #33cc66;">
     <td colspan="2" style="padding: 10px; font-family: monospace;">
       <font color="#ffcc00"><b>[ ACTIVE MODULES & TOOLKITS ]</b></font>
     </td>
   </tr>
+  <!-- Content: Tech Stack -->
   <tr>
     <td colspan="2" style="padding: 20px; font-family: monospace;">
       <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
@@ -64,25 +63,20 @@
       <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="CI/CD" />
     </td>
   </tr>
+  <!-- Section: Stats Header -->
   <tr bgcolor="#051a08" style="border-top: 2px solid #33cc66; border-bottom: 2px solid #33cc66;">
     <td colspan="2" style="padding: 10px; font-family: monospace;">
       <font color="#ffcc00"><b>[ BIOMETRIC METRICS & PERFORMANCE GRAPH ]</b></font>
     </td>
   </tr>
+  <!-- Content: Stats -->
   <tr>
     <td colspan="2" style="padding: 20px; font-family: monospace;" align="center">
-      <img src="./profile-summary-card-output/monokai/profile-details.svg" alt="Profile Details" width="98%" style="margin-bottom: 15px; border: 1px solid #33cc66;"/>
-      <br/>
-      <table width="100%" style="border: none; border-collapse: collapse;">
-        <tr style="border: none;">
-          <td width="50%" align="center" style="border: none; padding: 0 10px 0 0;">
-            <img src="./profile/stats.svg" alt="GitHub Stats" width="100%" style="border: 1px solid #33cc66;"/>
-          </td>
-          <td width="50%" align="center" style="border: none; padding: 0 0 0 10px;">
-            <img src="./profile/languages.svg" alt="Top Languages" width="100%" style="border: 1px solid #33cc66;"/>
-          </td>
-        </tr>
-      </table>
+      <img src="./profile-summary-card-output/monokai/profile-details.svg" alt="Profile Details" width="100%" style="margin-bottom: 10px; border: 1px solid #33cc66; display: block;"/>
+      <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%;">
+        <img src="./profile/stats.svg" alt="GitHub Stats" width="49%" style="border: 1px solid #33cc66; display: inline-block;"/>
+        <img src="./profile/languages.svg" alt="Top Languages" width="49%" style="border: 1px solid #33cc66; display: inline-block;"/>
+      </div>
     </td>
   </tr>
 </table>
