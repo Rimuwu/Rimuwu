@@ -42,7 +42,7 @@
   <g transform="translate(15, 45)">
     <!-- User Stats List -->
     <g transform="translate(15, 40)" font-size="12" class="monospace">
-      <text x="0" y="0" class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="150" class="text-white" font-weight="normal">1465</tspan></text>
+      <text x="0" y="0" class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="150" class="text-white" font-weight="normal">1468</tspan></text>
       <text x="0" y="25" class="text-green" font-weight="bold">PUBLIC REPOS:<tspan x="150" class="text-white" font-weight="normal">24</tspan></text>
       <text x="0" y="50" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="150" class="text-white" font-weight="normal">7 years ago</tspan></text>
       <text x="0" y="75" class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="150" class="text-white" font-weight="normal">115</tspan></text>
@@ -93,7 +93,7 @@
 
   <svg xmlns="http://www.w3.org/2000/svg" width="407" height="170" viewBox="0 0 467 195" fill="none" role="img" aria-labelledby="descId" x="17" y="245">
         <title id="titleId">AS1's GitHub Stats, Rank: A-</title>
-        <desc id="descId">Total Stars Earned: 82, Total Commits  (last year) : 1466, Total PRs: 115, Total Issues: 6, Contributed to (last year): 15</desc>
+        <desc id="descId">Total Stars Earned: 82, Total Commits  (last year) : 1468, Total PRs: 115, Total Issues: 6, Contributed to (last year): 15</desc>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -157,7 +157,7 @@
         stroke-dashoffset: 251.32741228718345;
       }
       to {
-        stroke-dashoffset: 84.30007517774693;
+        stroke-dashoffset: 84.29609813188449;
       }
     }
   
@@ -364,17 +364,17 @@
           <rect x="0" y="0" width="250" height="8" fill="white" rx="5" />
         </mask>
         
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="0" y="0" width="187.07" height="8" fill="#3572A5" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="0" y="0" width="187.11" height="8" fill="#3572A5" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="187.07" y="0" width="25.13" height="8" fill="#41b883" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="187.11" y="0" width="25.11" height="8" fill="#41b883" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="212.2" y="0" width="24.33" height="8" fill="#355570" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="212.22000000000003" y="0" width="24.32" height="8" fill="#355570" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="236.52999999999997" y="0" width="19.57" height="8" fill="#f1e05a" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="236.54000000000002" y="0" width="19.560000000000002" height="8" fill="#f1e05a" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="246.09999999999997" y="0" width="12.379999999999999" height="8" fill="#178600" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="246.10000000000002" y="0" width="12.379999999999999" height="8" fill="#178600" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="248.47999999999996" y="0" width="11.52" height="8" fill="#663399" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="248.48000000000002" y="0" width="11.52" height="8" fill="#663399" />
       
       
     <g transform="translate(0, 25)">
@@ -382,7 +382,7 @@
     <g class="stagger" style="animation-delay: 450ms">
       <circle cx="5" cy="6" r="5" fill="#3572A5" />
       <text data-testid="lang-name" x="15" y="10" class="lang-name">
-        Python 74.83%
+        Python 74.84%
       </text>
     </g>
   </g><g transform="translate(0, 25)">
@@ -403,7 +403,7 @@
     <g class="stagger" style="animation-delay: 450ms">
       <circle cx="5" cy="6" r="5" fill="#f1e05a" />
       <text data-testid="lang-name" x="15" y="10" class="lang-name">
-        JavaScript 3.83%
+        JavaScript 3.82%
       </text>
     </g>
   </g><g transform="translate(0, 25)">
