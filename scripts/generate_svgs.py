@@ -388,7 +388,7 @@ def parse_github_stats_and_chart():
                 pullRequests {{
                   totalCount
                 }}
-                repositories(first: 100, ownerAffiliations: OWNER, isFork: false, orderBy: {{field: STARGAZERS, direction: DESC}}) {{
+                repositories(first: 100, ownerAffiliations: OWNER, isFork: false, privacy: PUBLIC, orderBy: {{field: STARGAZERS, direction: DESC}}) {{
                   nodes {{
                     name
                     stargazerCount
@@ -838,9 +838,21 @@ def generate_metrics_xml_elements():
                 else all_weeks_dates)
     g1_fill, g1_stroke = build_paths(g1_vals, G1_W, G1_H)
 
-    # ── Graph 2: all time ──────────────────────────────────────────────
-    G2_W, G2_H = 740, 120
-    g2_fill, g2_stroke = build_paths(all_weeks_contributions, G2_W, G2_H)
+    # ── Graph 2: last 4 years ──────────────────────────────────────────
+    G2_W, G2_H = 540, 120
+    # Clip to last ~4 years (208 weeks)
+    g2_clip = 208
+    g2_vals  = (all_weeks_contributions[-g2_clip:] if len(all_weeks_contributions) >= g2_clip
+                else all_weeks_contributions)
+    g2_dates_clipped = (all_weeks_dates[-g2_clip:] if len(all_weeks_dates) >= g2_clip
+                        else all_weeks_dates)
+    g2_fill, g2_stroke = build_paths(g2_vals, G2_W, G2_H)
+
+    # All-time summary stats
+    alltime_commits = sum(all_weeks_contributions)
+    alltime_peak    = max(all_weeks_contributions) if all_weeks_contributions else 0
+    alltime_weeks   = len(all_weeks_contributions)
+    alltime_years   = len(set(d.year for d in all_weeks_dates)) if all_weeks_dates else 0
 
     # ── Month labels for Graph 1 (no overlap: min 4 weeks apart) ──────
     def make_month_labels(dates, w, chart_h):
@@ -882,22 +894,25 @@ def generate_metrics_xml_elements():
         return "\n        ".join(out)
 
     g1_months_xml = make_month_labels(g1_dates, G1_W, G1_H)
-    g2_years_xml  = make_year_labels(all_weeks_dates, G2_W, G2_H)
+    g2_years_xml  = make_year_labels(g2_dates_clipped, G2_W, G2_H)
 
-    # ── Language # bars (up to 5 langs, full-width) ────────────────────
+    # Year-commits sum for Graph 1 label
+    g1_total = sum(g1_vals)
+
+    # ── Language # bars (4 langs, full-width) ────────────────────────
     BAR_CHARS = 40
     BAR_W     = 335
-    top_langs = languages[:5]
+    top_langs = languages[:4]
     langs_xml = ""
     for idx, (l_name, l_pct, l_col) in enumerate(top_langs):
-        y_lbl  = 46 + idx * 23
-        y_bar  = y_lbl + 11
+        y_lbl  = 52 + idx * 27
+        y_bar  = y_lbl + 13
         filled = max(0, min(BAR_CHARS, round((l_pct / 100.0) * BAR_CHARS)))
         empty  = BAR_CHARS - filled
         hash_s = "#" * filled
         dot_s  = ":" * empty
         langs_xml += (
-            f'\n      <text x="20" y="{y_lbl}" font-size="9.5"'
+            f'\n      <text x="20" y="{y_lbl}" font-size="10"'
             f' class="monospace text-white">{xml_escape(l_name)}'
             f' <tspan fill="{l_col}" font-weight="bold">({l_pct:.1f}%)</tspan></text>'
             f'\n      <text x="20" y="{y_bar}" font-size="9"'
@@ -911,21 +926,23 @@ def generate_metrics_xml_elements():
     def trunc(name, mx=20):
         return name[:mx] + ".." if len(name) > mx else name
 
+    # Show only repos that actually have stars (or at least the top N real ones)
+    real_repos = [r for r in top_repos if r[1] > 0]
     repos_xml = ""
     for ri in range(4):
-        if ri < len(top_repos):
-            rname  = xml_escape(trunc(top_repos[ri][0]))
-            rstars = top_repos[ri][1]
-            rlang  = xml_escape(top_repos[ri][2] or "Unknown")
+        if ri < len(real_repos):
+            rname  = xml_escape(trunc(real_repos[ri][0]))
+            rstars = real_repos[ri][1]
+            rlang  = xml_escape(real_repos[ri][2] or "?")
         else:
-            rname, rstars, rlang = "-", 0, "-"
-        y_r = 50 + ri * 29
+            rname, rstars, rlang = "-", "-", ""
+        y_r = 50 + ri * 28
         repos_xml += (
-            f'\n      <text x="20" y="{y_r}" font-size="10"'
+            f'\n      <text x="20" y="{y_r}" font-size="11.5"'
             f' class="monospace text-green" font-weight="bold">{rname}</text>'
-            f'\n      <text x="238" y="{y_r}" font-size="10"'
+            f'\n      <text x="230" y="{y_r}" font-size="11.5"'
             f' class="monospace text-gold">&#x2605; {rstars}</text>'
-            f'\n      <text x="285" y="{y_r}" font-size="9"'
+            f'\n      <text x="280" y="{y_r}" font-size="10"'
             f' class="monospace text-white" opacity="0.55">[{rlang}]</text>'
         )
 
@@ -937,7 +954,8 @@ def generate_metrics_xml_elements():
   <!-- ═══ ROW 1: GitHub Stats (left) + Graph 1 This Year (right) ═══ -->
   <rect x="15" y="42" width="375" height="200" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
   <g transform="translate(15,42)">
-    <g transform="translate(15,28)" font-size="11" class="monospace">
+    <text x="188" y="20" class="monospace text-green-dim" font-size="9" text-anchor="middle">[ GITHUB STATISTICS ]</text>
+    <g transform="translate(15,35)" font-size="11" class="monospace">
       <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="148" class="text-white" font-weight="normal">{stars}</tspan></text>
       <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="148" class="text-white" font-weight="normal">{commits}</tspan></text>
       <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="148" class="text-white" font-weight="normal">{prs}</tspan></text>
@@ -945,17 +963,18 @@ def generate_metrics_xml_elements():
       <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="148" class="text-white" font-weight="normal">{contribs}</tspan></text>
       <text x="0" y="120" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="148" class="text-white" font-weight="normal">{joined}</tspan></text>
     </g>
-    <g transform="translate(308,100)">
-      <circle cx="0" cy="0" r="34" fill="none" stroke="{COLORS['gold']}" stroke-width="4" opacity="0.2"/>
-      <circle cx="0" cy="0" r="34" fill="none" stroke="{COLORS['gold']}" stroke-width="4" stroke-dasharray="200" stroke-dashoffset="50" stroke-linecap="round"/>
-      <text x="0" y="8"  class="monospace text-gold" font-size="20" text-anchor="middle" font-weight="bold">{rank}</text>
-      <text x="0" y="48" class="monospace text-gold" font-size="8"  text-anchor="middle">RANK</text>
+    <g transform="translate(188,160)">
+      <circle cx="0" cy="0" r="28" fill="none" stroke="{COLORS['gold']}" stroke-width="3" opacity="0.2"/>
+      <circle cx="0" cy="0" r="28" fill="none" stroke="{COLORS['gold']}" stroke-width="3" stroke-dasharray="176" stroke-dashoffset="44" stroke-linecap="round"/>
+      <text x="0" y="7"  class="monospace text-gold" font-size="17" text-anchor="middle" font-weight="bold">{rank}</text>
+      <text x="0" y="40" class="monospace text-gold" font-size="7.5" text-anchor="middle">RANK</text>
     </g>
   </g>
 
   <rect x="400" y="42" width="383" height="200" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
   <g transform="translate(400,42)">
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ COMMITS - THIS YEAR ]</text>
+    <text x="363" y="22" class="monospace text-green" font-size="10" text-anchor="end" font-weight="bold">{g1_total}</text>
     <defs>
       <linearGradient id="chart-grad-ly" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="{COLORS['green']}" stop-opacity="0.35"/>
@@ -984,10 +1003,10 @@ def generate_metrics_xml_elements():
     {repos_xml}
   </g>
 
-  <!-- ═══ ROW 3: All-Time Graph (full width) ═══ -->
+  <!-- ═══ ROW 3: Last 4 Years Graph + All-Time Stats ═══ -->
   <rect x="15" y="426" width="770" height="207" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
   <g transform="translate(15,426)">
-    <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ ALL-TIME CONTRIBUTION GRAPH ]</text>
+    <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ CONTRIBUTION GRAPH - LAST 4 YEARS ]</text>
     <defs>
       <linearGradient id="chart-grad-at" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="{COLORS['green']}" stop-opacity="0.35"/>
@@ -1001,6 +1020,18 @@ def generate_metrics_xml_elements():
       <path d="{g2_fill}" fill="url(#chart-grad-at)" stroke="none" class="chart-fill"/>
       <path d="{g2_stroke}" fill="none" stroke="{COLORS['green']}" stroke-width="2" class="chart-line-g2"/>
     </svg>
+    <!-- All-time stats sidebar -->
+    <g transform="translate(572,38)" font-size="10" class="monospace">
+      <text x="0" y="0"  class="text-green-dim" font-size="8.5" font-weight="bold">ALL-TIME STATS</text>
+      <text x="0" y="22" class="text-green">COMMITS:</text>
+      <text x="0" y="36" class="text-white" font-size="13" font-weight="bold">{alltime_commits}</text>
+      <text x="0" y="62" class="text-green">PEAK / WK:</text>
+      <text x="0" y="76" class="text-white" font-size="13" font-weight="bold">{alltime_peak}</text>
+      <text x="0" y="102" class="text-green">ACTIVE YRS:</text>
+      <text x="0" y="116" class="text-white" font-size="13" font-weight="bold">{alltime_years}</text>
+      <text x="0" y="142" class="text-green">WEEKS:</text>
+      <text x="0" y="156" class="text-white" font-size="13" font-weight="bold">{alltime_weeks}</text>
+    </g>
   </g>"""
 
 
