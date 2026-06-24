@@ -93,7 +93,7 @@
 
   <svg xmlns="http://www.w3.org/2000/svg" width="407" height="170" viewBox="0 0 467 195" fill="none" role="img" aria-labelledby="descId" x="17" y="245">
         <title id="titleId">AS1's GitHub Stats, Rank: A-</title>
-        <desc id="descId">Total Stars Earned: 82, Total Commits  (last year) : 1465, Total PRs: 115, Total Issues: 6, Contributed to (last year): 15</desc>
+        <desc id="descId">Total Stars Earned: 82, Total Commits  (last year) : 1466, Total PRs: 115, Total Issues: 6, Contributed to (last year): 15</desc>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -157,7 +157,7 @@
         stroke-dashoffset: 251.32741228718345;
       }
       to {
-        stroke-dashoffset: 84.30207198601471;
+        stroke-dashoffset: 84.30007517774693;
       }
     }
   
@@ -364,17 +364,17 @@
           <rect x="0" y="0" width="250" height="8" fill="white" rx="5" />
         </mask>
         
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="0" y="0" width="187.02" height="8" fill="#3572A5" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="0" y="0" width="187.07" height="8" fill="#3572A5" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="187.02" y="0" width="25.15" height="8" fill="#41b883" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="187.07" y="0" width="25.13" height="8" fill="#41b883" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="212.17000000000002" y="0" width="24.35" height="8" fill="#355570" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="212.2" y="0" width="24.33" height="8" fill="#355570" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="236.52" y="0" width="19.58" height="8" fill="#f1e05a" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="236.52999999999997" y="0" width="19.57" height="8" fill="#f1e05a" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="246.10000000000002" y="0" width="12.39" height="8" fill="#178600" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="246.09999999999997" y="0" width="12.379999999999999" height="8" fill="#178600" />
       
-        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="248.49" y="0" width="11.52" height="8" fill="#663399" />
+        <rect mask="url(#rect-mask)" data-testid="lang-progress" x="248.47999999999996" y="0" width="11.52" height="8" fill="#663399" />
       
       
     <g transform="translate(0, 25)">
@@ -382,21 +382,21 @@
     <g class="stagger" style="animation-delay: 450ms">
       <circle cx="5" cy="6" r="5" fill="#3572A5" />
       <text data-testid="lang-name" x="15" y="10" class="lang-name">
-        Python 74.81%
+        Python 74.83%
       </text>
     </g>
   </g><g transform="translate(0, 25)">
     <g class="stagger" style="animation-delay: 600ms">
       <circle cx="5" cy="6" r="5" fill="#41b883" />
       <text data-testid="lang-name" x="15" y="10" class="lang-name">
-        Vue 10.06%
+        Vue 10.05%
       </text>
     </g>
   </g><g transform="translate(0, 50)">
     <g class="stagger" style="animation-delay: 750ms">
       <circle cx="5" cy="6" r="5" fill="#355570" />
       <text data-testid="lang-name" x="15" y="10" class="lang-name">
-        GDScript 9.74%
+        GDScript 9.73%
       </text>
     </g>
   </g></g><g transform="translate(150, 0)"><g transform="translate(0, 0)">
