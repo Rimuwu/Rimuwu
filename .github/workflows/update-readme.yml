@@ -19,7 +19,7 @@ jobs:
           card: stats
           options: username=${{ github.repository_owner }}&show_icons=true&bg_color=000000&title_color=ffcc00&text_color=33cc66&icon_color=33cc66&border_color=33cc66
           path: profile/stats.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ST_TOKEN }}
 
       - name: Generate languages card
         uses: readme-tools/github-readme-stats-action@v1
@@ -27,12 +27,12 @@ jobs:
           card: top-langs
           options: username=${{ github.repository_owner }}&layout=compact&bg_color=000000&title_color=ffcc00&text_color=33cc66&icon_color=33cc66&border_color=33cc66
           path: profile/languages.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ST_TOKEN }}
 
       - name: Generate profile summary cards
         uses: vn7n24fzkq/github-profile-summary-cards@release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ST_TOKEN }}
         with:
           USERNAME: ${{ github.repository_owner }}
           BRANCH_NAME: "main"

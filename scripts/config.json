@@ -1,8 +1,25 @@
 {
   "layout": {
-    "header_height": 450,
-    "stack_height": 120,
+    "header_height": 490,
+    "stack_height": 160,
     "metrics_height": 430
+  },
+  "online_hours": {
+    "utc_offset": 3,
+    "start": 10,
+    "end": 20
+  },
+  "colors": {
+    "background": "#000000",
+    "green": "#33cc66",
+    "gold": "#ffcc00",
+    "white": "#ffffff",
+    "red": "#ff5555",
+    "header_fill": "#051a08",
+    "status_active": "#55ff55",
+    "status_standby": "#ff5555",
+    "fallback_fill": "#111111",
+    "grid_opacity": 0.3
   },
   "fonts": {
     "log_header_font_size": 15,
@@ -13,20 +30,23 @@
     "name": "Rimuwu",
     "name_real": "WARE, WYNDHAM FORREST",
     "dept": "SALVAGE",
-    "dept_desc": "DEVELOPMENT & DESIGN",
+    "dept_desc": "DEVELOPMENT and DESIGN",
     "status": "ACTIVE",
     "dob": "7 FEB 2101",
     "pob": "EARTH",
     "logs": [
       {
+        "timestamp": "2128-03-15 08:30:21",
         "title": "🎌 Japan Enthusiast:",
         "text": "Passionate about Japanese culture, history, and aesthetics."
       },
       {
+        "timestamp": "2128-05-10 14:22:05",
         "title": "💻 Developer Journey:",
         "text": "Started with bots, now building mods, websites, games, & high-load apps."
       },
       {
+        "timestamp": "2128-06-24 20:15:00",
         "title": "🦖 What about now:",
         "text": "Designing and developing custom independent software systems."
       }

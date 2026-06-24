@@ -1,13 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="430" viewBox="0 0 800 430">
+  <defs>
+    <pattern id="bg-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#33cc66" stroke-width="0.5" opacity="0.3" />
+    </pattern>
+  </defs>
   <style>
     .monospace { font-family: monospace, Courier, fixed; }
     .text-gold { fill: #ffcc00; }
   </style>
   <rect x="0" y="0" width="800" height="430" fill="#000000"/>
+  <rect x="0" y="0" width="800" height="430" fill="url(#bg-grid)"/>
   <path d="M 0,0 L 0,430 L 800,430 L 800,0" stroke="#33cc66" stroke-width="4" fill="none"/>
   <!-- Section Header -->
   <rect x="2" y="0" width="796" height="30" fill="#051a08" stroke="#33cc66" stroke-width="2"/>
-  <text x="20" y="20" class="monospace text-gold" font-size="13" font-weight="bold">[ BIOMETRIC METRICS &amp; PERFORMANCE GRAPH ]</text>
+  <text x="20" y="21" class="monospace text-gold" font-size="16" font-weight="bold">[ BIOMETRIC METRICS &amp; PERFORMANCE GRAPH ]</text>
 
   <!-- Summary Card Bounding Box -->
   <rect x="15" y="45" width="770" height="180" fill="none" stroke="#33cc66" stroke-width="2"/>
