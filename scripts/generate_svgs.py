@@ -289,89 +289,164 @@ def generate_globe_html(x, y):
     {paths_xml}
 </g>"""
 
-def parse_github_stats():
-    commits = "5.1k"
+def parse_github_stats_and_chart():
+    # Default fallback data
+    commits = "1.5k"
     repos = "24"
     joined = "7 years ago"
-    prs = "101"
+    prs = "115"
     
-    paths = [
-        "profile-summary-card-output/default",
-        "profile-summary-card-output/vue",
-        "profile-summary-card-output/monokai",
-        "profile-summary-card-output/chartreuse_dark"
-    ]
-    
-    for base in paths:
-        details_path = os.path.join(base, "0-profile-details.svg")
-        stats_path = os.path.join(base, "3-stats.svg")
-        if os.path.exists(details_path) and os.path.exists(stats_path):
-            try:
-                tree = ET.parse(details_path)
-                root = tree.getroot()
-                texts = [t.text for t in root.findall(".//{http://www.w3.org/2000/svg}text") if t.text]
-                for txt in texts:
-                    if "Public Repos" in txt:
-                        repos = txt.split()[0]
-                    elif "Joined GitHub" in txt:
-                        joined = txt.replace("Joined GitHub ", "")
-                
-                tree_stats = ET.parse(stats_path)
-                root_stats = tree_stats.getroot()
-                y_to_label = {}
-                y_to_value = {}
-                for t in root_stats.findall(".//{http://www.w3.org/2000/svg}text"):
-                    x = t.get("x")
-                    y = t.get("y")
-                    txt = t.text
-                    if x == "21" and txt:
-                        y_to_label[y] = txt
-                    elif x == "130" and txt:
-                        y_to_value[y] = txt
-                
-                for y, label in y_to_label.items():
-                    val = y_to_value.get(y)
-                    if val:
-                        if "Total Commits" in label:
-                            commits = val
-                        elif "Total PRs" in label:
-                            prs = val
-                break
-            except Exception as e:
-                print(f"Error parsing base {base}: {e}")
-                
-    return commits, repos, joined, prs
-
-def parse_github_chart():
-    default_d = (
+    # Pre-calculated default curve data
+    chart_d = (
         "M0,109.3C10.4,101.1,20.8,92.9,31.2,92.3C41.9,91.8,52.7,92.1,63.5,91.6"
         "C74.2,91.0,85.0,5.1,95.7,5.1C106.1,5.1,116.6,28.0,127.0,38.2C137.7,48.6,148.5,60.1,159.2,66.8"
         "C169.6,73.2,180.1,74.7,190.5,78.0C201.2,81.3,212.0,86.6,222.7,86.6C233.5,86.6,244.3,77.3,255.0,72.0"
         "C264.7,67.1,274.5,60.0,284.2,56.4C294.9,52.3,305.7,50.2,316.4,50.2C326.9,50.2,337.3,90.2,347.7,90.2"
         "C358.4,90.2,369.2,81.9,380.0,73.6L380.0,110.0L0.0,110.0Z"
     )
+    month_labels_xml = f"""
+      <text x="31.2" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Jul</text>
+      <line x1="31.2" y1="105" x2="31.2" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
+      <text x="95.7" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Sep</text>
+      <line x1="95.7" y1="105" x2="95.7" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
+      <text x="159.2" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Nov</text>
+      <line x1="159.2" y1="105" x2="159.2" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
+      <text x="222.7" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Jan</text>
+      <line x1="222.7" y1="105" x2="222.7" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
+      <text x="284.2" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Mar</text>
+      <line x1="284.2" y1="105" x2="284.2" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
+      <text x="347.7" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">May</text>
+      <line x1="347.7" y1="105" x2="347.7" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
+    """
     
-    paths = [
-        "profile-summary-card-output/default",
-        "profile-summary-card-output/vue",
-        "profile-summary-card-output/monokai",
-        "profile-summary-card-output/chartreuse_dark"
-    ]
+    # Try parsing commits and PRs from local stats.svg if it exists
+    stats_path = "profile/stats.svg"
+    if os.path.exists(stats_path):
+        try:
+            tree = ET.parse(stats_path)
+            root = tree.getroot()
+            desc = root.find(".//{http://www.w3.org/2000/svg}desc")
+            if desc is not None and desc.text:
+                desc_text = desc.text
+                commits_match = re.search(r'Total Commits\s+\(last year\)\s*:\s*([\d,]+)', desc_text)
+                if commits_match:
+                    commits = commits_match.group(1)
+                prs_match = re.search(r'Total PRs\s*:\s*([\d,]+)', desc_text)
+                if prs_match:
+                    prs = prs_match.group(1)
+        except Exception as e:
+            print(f"Error parsing local stats.svg: {e}")
+
+    # Now attempt to fetch online data using GITHUB_TOKEN or ST_TOKEN
+    token = os.environ.get("ST_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    username = CONFIG["profile"]["name"]
     
-    for base in paths:
-        details_path = os.path.join(base, "0-profile-details.svg")
-        if os.path.exists(details_path):
-            try:
-                tree = ET.parse(details_path)
-                root = tree.getroot()
-                for p in root.findall(".//{http://www.w3.org/2000/svg}path"):
-                    d = p.get("d", "")
-                    if d.startswith("M0,") and "C" in d:
-                        return d
-            except Exception as e:
-                print(f"Error parsing base chart {base}: {e}")
+    if token:
+        try:
+            # Query REST API for profile details (public_repos and created_at)
+            import urllib.request
+            import json
+            import datetime
+            
+            req_headers = {
+                "Authorization": f"Bearer {token}",
+                "User-Agent": "Rimuwu-Profile-App"
+            }
+            
+            # Fetch repos and created_at
+            user_url = f"https://api.github.com/users/{username}"
+            req = urllib.request.Request(user_url, headers=req_headers)
+            with urllib.request.urlopen(req, timeout=5) as res:
+                user_data = json.loads(res.read().decode("utf-8"))
+                repos = str(user_data.get("public_repos", repos))
+                created_at_str = user_data.get("created_at")
+                if created_at_str:
+                    created_year = datetime.datetime.strptime(created_at_str[:10], "%Y-%m-%d").year
+                    years_active = datetime.datetime.now().year - created_year
+                    joined = f"{years_active} years ago"
+            
+            # Fetch contribution calendar from GraphQL
+            query = """
+            query($username: String!) {
+              user(login: $username) {
+                contributionsCollection {
+                  contributionCalendar {
+                    weeks {
+                      contributionDays {
+                        contributionCount
+                        date
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            """
+            gql_data = json.dumps({"query": query, "variables": {"username": username}}).encode("utf-8")
+            gql_req = urllib.request.Request("https://api.github.com/graphql", data=gql_data, headers=req_headers, method="POST")
+            with urllib.request.urlopen(gql_req, timeout=5) as res:
+                result = json.loads(res.read().decode("utf-8"))
+                calendar = result.get("data", {}).get("user", {}).get("contributionsCollection", {}).get("contributionCalendar", {})
+                weeks = calendar.get("weeks", [])
                 
-    return default_d
+                if weeks:
+                    # Calculate weekly contributions
+                    weekly_contributions = []
+                    week_dates = []
+                    for w in weeks:
+                        days = w.get("contributionDays", [])
+                        if days:
+                            weekly_contributions.append(sum(d.get("contributionCount", 0) for d in days))
+                            week_dates.append(datetime.datetime.strptime(days[0]["date"], "%Y-%m-%d"))
+                    
+                    if weekly_contributions:
+                        # Build chart coordinates
+                        N = len(weekly_contributions)
+                        dx = 380.0 / (N - 1)
+                        max_val = max(weekly_contributions)
+                        if max_val == 0:
+                            max_val = 1
+                        
+                        path_points = []
+                        for i, val in enumerate(weekly_contributions):
+                            x = i * dx
+                            y = 100.0 - (val / max_val) * 90.0
+                            path_points.append((x, y))
+                        
+                        stroke_parts = [f"M{path_points[0][0]:.1f},{path_points[0][1]:.1f}"]
+                        for x, y in path_points[1:]:
+                            stroke_parts.append(f"L{x:.1f},{y:.1f}")
+                        stroke_d = "".join(stroke_parts)
+                        chart_d = f"{stroke_d}L380.0,110.0L0.0,110.0Z"
+                        
+                        # Build month labels dynamically
+                        month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                        month_labels = []
+                        last_month = None
+                        for i, dt in enumerate(week_dates):
+                            m_name = month_names[dt.month - 1]
+                            if m_name != last_month:
+                                month_labels.append((i, m_name))
+                                last_month = m_name
+                        
+                        # Build XML elements for months
+                        labels_xml = []
+                        for idx, name in month_labels:
+                            x_pos = idx * dx
+                            labels_xml.append(
+                                f'<text x="{x_pos:.1f}" y="120" fill="{COLORS["green"]}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">{name}</text>'
+                            )
+                            labels_xml.append(
+                                f'<line x1="{x_pos:.1f}" y1="105" x2="{x_pos:.1f}" y2="110" stroke="{COLORS["green"]}" stroke-width="0.5" opacity="0.3" />'
+                            )
+                        month_labels_xml = "\n".join(labels_xml)
+                        
+        except Exception as e:
+            print(f"Error fetching live GitHub data: {e}")
+            
+    commits = commits.replace(",", "")
+    prs = prs.replace(",", "")
+    return commits, repos, joined, prs, chart_d, month_labels_xml
 
 def get_grid_reveal_xml(width, height, start_delay):
     cols, rows = 4, 4
@@ -661,23 +736,19 @@ def generate_stack_xml_elements(embeds):
     return elements
 
 def generate_metrics_xml_elements():
-    commits, repos, joined, prs = parse_github_stats()
-    chart_d = parse_github_chart()
+    commits, repos, joined, prs, chart_d, month_labels_xml = parse_github_stats_and_chart()
     
     import re
     parts = re.split(r'L380(?:\.0)?,', chart_d)
     stroke_d = parts[0] if parts else chart_d
     
     details_xml = f"""<g transform="translate(15, 45)">
-    <!-- Terminal Headers -->
-    <text x="15" y="30" class="monospace text-gold" font-size="15" font-weight="bold">&gt; GITHUB PROFILE STATUS</text>
-    
     <!-- User Stats List -->
-    <g transform="translate(15, 60)" font-size="12" class="monospace">
-      <text x="0" y="0" class="text-green-dim">TOTAL COMMITS:<tspan x="150" class="text-white">{commits}</tspan></text>
-      <text x="0" y="22" class="text-green-dim">PUBLIC REPOS:<tspan x="150" class="text-white">{repos}</tspan></text>
-      <text x="0" y="44" class="text-green-dim">YEARS ACTIVE:<tspan x="150" class="text-white">{joined}</tspan></text>
-      <text x="0" y="66" class="text-green-dim">PULL REQUESTS:<tspan x="150" class="text-white">{prs}</tspan></text>
+    <g transform="translate(15, 40)" font-size="12" class="monospace">
+      <text x="0" y="0" class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="150" class="text-white" font-weight="normal">{commits}</tspan></text>
+      <text x="0" y="25" class="text-green" font-weight="bold">PUBLIC REPOS:<tspan x="150" class="text-white" font-weight="normal">{repos}</tspan></text>
+      <text x="0" y="50" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="150" class="text-white" font-weight="normal">{joined}</tspan></text>
+      <text x="0" y="75" class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="150" class="text-white" font-weight="normal">{prs}</tspan></text>
     </g>
 
     <!-- Glowing chart gradient definition -->
@@ -689,7 +760,7 @@ def generate_metrics_xml_elements():
     </defs>
 
     <!-- Custom Neon Commits Chart -->
-    <svg x="260" y="20" width="495" height="140" viewBox="0 0 380 110" preserveAspectRatio="none">
+    <svg x="260" y="15" width="495" height="145" viewBox="0 0 380 125" preserveAspectRatio="none">
       <!-- Cyberpunk Grid Lines -->
       <line x1="0" y1="27.5" x2="380" y2="27.5" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
       <line x1="0" y1="55" x2="380" y2="55" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
@@ -698,6 +769,9 @@ def generate_metrics_xml_elements():
       <line x1="95" y1="0" x2="95" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
       <line x1="190" y1="0" x2="190" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
       <line x1="285" y1="0" x2="285" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
+
+      <!-- Month Labels & Ticks -->
+{month_labels_xml}
 
       <!-- Chart Area Fill -->
       <path d="{chart_d}" fill="url(#chart-grad)" stroke="none" class="chart-fill" />
@@ -923,6 +997,7 @@ def main():
   </defs>
   <style>
     .monospace {{ font-family: monospace, Courier, fixed; }}
+    .text-green {{ fill: {COLORS['green']}; }}
     .text-green-dim {{ fill: {COLORS['green']}; opacity: 0.65; }}
     .text-gold {{ fill: {COLORS['gold']}; }}
     .text-white {{ fill: {COLORS['white']}; }}
