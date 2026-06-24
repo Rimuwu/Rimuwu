@@ -3,12 +3,9 @@
     .monospace { font-family: monospace, Courier, fixed; }
     .text-gold { fill: #ffcc00; }
   </style>
-
-  <!-- Background and Side Borders -->
   <rect x="0" y="0" width="800" height="150" fill="#000000"/>
   <line x1="0" y1="0" x2="0" y2="150" stroke="#33cc66" stroke-width="4"/>
   <line x1="800" y1="0" x2="800" y2="150" stroke="#33cc66" stroke-width="4"/>
-
   <!-- Section Header -->
   <rect x="2" y="0" width="796" height="30" fill="#051a08" stroke="#33cc66" stroke-width="2"/>
   <text x="20" y="20" class="monospace text-gold" font-size="13" font-weight="bold">[ ACTIVE MODULES &amp; TOOLKITS ]</text>
