@@ -2,7 +2,7 @@
   "layout": {
     "header_height": 490,
     "stack_height": 160,
-    "metrics_height": 430
+    "metrics_height": 645
   },
   "online_hours": {
     "utc_offset": 3,
@@ -19,7 +19,7 @@
     "status_active": "#55ff55",
     "status_standby": "#ff5555",
     "fallback_fill": "#111111",
-    "grid_opacity": 0.3
+    "grid_opacity": 0.25
   },
   "fonts": {
     "log_header_font_size": 15,

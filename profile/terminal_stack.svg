@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="160" viewBox="0 0 800 160">
   <defs>
     <pattern id="bg-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#33cc66" stroke-width="0.5" opacity="0.3" />
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#33cc66" stroke-width="0.5" opacity="0.25" />
     </pattern>
   </defs>
   <style>

@@ -1,4 +1,5 @@
 import os
+import math
 import base64
 import urllib.request
 import re
@@ -290,163 +291,233 @@ def generate_globe_html(x, y):
 </g>"""
 
 def parse_github_stats_and_chart():
-    # Default fallback data
-    commits = "1.5k"
+    # 1. Default fallback datasets and values
+    commits = "1465"
     repos = "24"
     joined = "7 years ago"
     prs = "115"
+    issues = "6"
+    stars = "82"
+    contribs = "15"
+    rank = "A-"
     
-    # Pre-calculated default curve data
-    chart_d = (
-        "M0,109.3C10.4,101.1,20.8,92.9,31.2,92.3C41.9,91.8,52.7,92.1,63.5,91.6"
-        "C74.2,91.0,85.0,5.1,95.7,5.1C106.1,5.1,116.6,28.0,127.0,38.2C137.7,48.6,148.5,60.1,159.2,66.8"
-        "C169.6,73.2,180.1,74.7,190.5,78.0C201.2,81.3,212.0,86.6,222.7,86.6C233.5,86.6,244.3,77.3,255.0,72.0"
-        "C264.7,67.1,274.5,60.0,284.2,56.4C294.9,52.3,305.7,50.2,316.4,50.2C326.9,50.2,337.3,90.2,347.7,90.2"
-        "C358.4,90.2,369.2,81.9,380.0,73.6L380.0,110.0L0.0,110.0Z"
-    )
-    month_labels_xml = f"""
-      <text x="31.2" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Jul</text>
-      <line x1="31.2" y1="105" x2="31.2" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
-      <text x="95.7" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Sep</text>
-      <line x1="95.7" y1="105" x2="95.7" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
-      <text x="159.2" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Nov</text>
-      <line x1="159.2" y1="105" x2="159.2" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
-      <text x="222.7" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Jan</text>
-      <line x1="222.7" y1="105" x2="222.7" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
-      <text x="284.2" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">Mar</text>
-      <line x1="284.2" y1="105" x2="284.2" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
-      <text x="347.7" y="120" fill="{COLORS['green']}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">May</text>
-      <line x1="347.7" y1="105" x2="347.7" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.3" />
-    """
+    top_repos = [
+        ("DinoGochi-WebOpen", 43, "Python"),
+        ("SMM.web", 18, "Vue"),
+        ("SPS-Shortly-PartyStory", 15, "GDScript"),
+        ("vibe-preparation", 2, "JavaScript")
+    ]
     
-    # Try parsing commits and PRs from local stats.svg if it exists
-    stats_path = "profile/stats.svg"
-    if os.path.exists(stats_path):
-        try:
-            tree = ET.parse(stats_path)
-            root = tree.getroot()
-            desc = root.find(".//{http://www.w3.org/2000/svg}desc")
-            if desc is not None and desc.text:
-                desc_text = desc.text
-                commits_match = re.search(r'Total Commits\s+\(last year\)\s*:\s*([\d,]+)', desc_text)
-                if commits_match:
-                    commits = commits_match.group(1)
-                prs_match = re.search(r'Total PRs\s*:\s*([\d,]+)', desc_text)
-                if prs_match:
-                    prs = prs_match.group(1)
-        except Exception as e:
-            print(f"Error parsing local stats.svg: {e}")
-
-    # Now attempt to fetch online data using GITHUB_TOKEN or ST_TOKEN
+    languages = [
+        ("Python", 74.81, "#3572A5"),
+        ("Vue", 10.06, "#41b883"),
+        ("GDScript", 9.74, "#478CBF"),
+        ("JavaScript", 3.83, "#f1e05a"),
+        ("C#", 0.95, "#178600"),
+        ("CSS", 0.61, "#663399")
+    ]
+    
+    # Generate mock weeks contributions (7 years, 52 weeks = 364 weeks)
+    # Using random walk to avoid repetitive wave look
+    import random
+    random.seed(42)
+    all_weeks_contributions = []
+    all_weeks_dates = []
+    start_dt = datetime.now() - timedelta(weeks=364)
+    
+    curr_val = 15
+    for idx in range(364):
+        dt = start_dt + timedelta(weeks=idx)
+        change = random.choice([-6, -3, -1, 0, 1, 3, 5, 8])
+        curr_val = max(0, min(80, curr_val + change))
+        if dt.month == 12 and dt.day > 20:
+            val = int(curr_val * 0.15)
+        else:
+            val = curr_val
+        all_weeks_contributions.append(val)
+        all_weeks_dates.append(dt)
+        
     token = os.environ.get("ST_TOKEN") or os.environ.get("GITHUB_TOKEN")
     username = CONFIG["profile"]["name"]
     
     if token:
         try:
-            # Query REST API for profile details (public_repos and created_at)
-            import urllib.request
-            import json
-            import datetime
-            
             req_headers = {
                 "Authorization": f"Bearer {token}",
                 "User-Agent": "Rimuwu-Profile-App"
             }
             
-            # Fetch repos and created_at
+            # Fetch user details
             user_url = f"https://api.github.com/users/{username}"
             req = urllib.request.Request(user_url, headers=req_headers)
+            created_year = datetime.now().year - 7
             with urllib.request.urlopen(req, timeout=5) as res:
                 user_data = json.loads(res.read().decode("utf-8"))
                 repos = str(user_data.get("public_repos", repos))
                 created_at_str = user_data.get("created_at")
                 if created_at_str:
-                    created_year = datetime.datetime.strptime(created_at_str[:10], "%Y-%m-%d").year
-                    years_active = datetime.datetime.now().year - created_year
+                    created_year = datetime.strptime(created_at_str[:10], "%Y-%m-%d").year
+                    years_active = datetime.now().year - created_year
                     joined = f"{years_active} years ago"
             
-            # Fetch contribution calendar from GraphQL
-            query = """
-            query($username: String!) {
-              user(login: $username) {
-                contributionsCollection {
-                  contributionCalendar {
-                    weeks {
-                      contributionDays {
+            # GraphQL query
+            current_year = datetime.now().year
+            year_queries = []
+            for yr in range(created_year, current_year + 1):
+                year_queries.append(f"""
+                y{yr}: contributionsCollection(from: "{yr}-01-01T00:00:00Z", to: "{yr}-12-31T23:59:59Z") {{
+                  contributionCalendar {{
+                    totalContributions
+                    weeks {{
+                      contributionDays {{
                         contributionCount
                         date
-                      }
-                    }
-                  }
-                }
-              }
-            }
+                      }}
+                    }}
+                  }}
+                }}
+                """)
+            year_queries_str = "\n".join(year_queries)
+
+            query = f"""
+            query($username: String!) {{
+              user(login: $username) {{
+                issues {{
+                  totalCount
+                }}
+                pullRequests {{
+                  totalCount
+                }}
+                repositories(first: 100, ownerAffiliations: OWNER, isFork: false, orderBy: {{field: STARGAZERS, direction: DESC}}) {{
+                  nodes {{
+                    name
+                    stargazerCount
+                    primaryLanguage {{
+                      name
+                      color
+                    }}
+                    languages(first: 10, orderBy: {{field: SIZE, direction: DESC}}) {{
+                      edges {{
+                        size
+                        node {{
+                          name
+                          color
+                        }}
+                      }}
+                    }}
+                    defaultBranchRef {{
+                      target {{
+                        ... on Commit {{
+                          history {{
+                            totalCount
+                          }}
+                        }}
+                      }}
+                    }}
+                  }}
+                }}
+                {year_queries_str}
+              }}
+            }}
             """
+            
             gql_data = json.dumps({"query": query, "variables": {"username": username}}).encode("utf-8")
             gql_req = urllib.request.Request("https://api.github.com/graphql", data=gql_data, headers=req_headers, method="POST")
             with urllib.request.urlopen(gql_req, timeout=5) as res:
                 result = json.loads(res.read().decode("utf-8"))
-                calendar = result.get("data", {}).get("user", {}).get("contributionsCollection", {}).get("contributionCalendar", {})
-                weeks = calendar.get("weeks", [])
-                
-                if weeks:
-                    # Calculate weekly contributions
-                    weekly_contributions = []
-                    week_dates = []
-                    for w in weeks:
-                        days = w.get("contributionDays", [])
-                        if days:
-                            weekly_contributions.append(sum(d.get("contributionCount", 0) for d in days))
-                            week_dates.append(datetime.datetime.strptime(days[0]["date"], "%Y-%m-%d"))
+                user_res = result.get("data", {}).get("user", {})
+                if user_res:
+                    issues = str(user_res.get("issues", {}).get("totalCount", issues))
+                    prs = str(user_res.get("pullRequests", {}).get("totalCount", prs))
                     
-                    if weekly_contributions:
-                        # Build chart coordinates
-                        N = len(weekly_contributions)
-                        dx = 380.0 / (N - 1)
-                        max_val = max(weekly_contributions)
-                        if max_val == 0:
-                            max_val = 1
+                    repos_nodes = user_res.get("repositories", {}).get("nodes", [])
+                    total_stars = sum(r.get("stargazerCount", 0) for r in repos_nodes)
+                    stars = str(total_stars)
+                    
+                    total_commits = 0
+                    for r in repos_nodes:
+                        ref = r.get("defaultBranchRef")
+                        if ref:
+                            target = ref.get("target")
+                            if target:
+                                total_commits += target.get("history", {}).get("totalCount", 0)
+                                
+                    langs_agg = {}
+                    for r in repos_nodes:
+                        edges = r.get("languages", {}).get("edges", [])
+                        for edge in edges:
+                            l_name = edge["node"]["name"]
+                            l_color = edge["node"].get("color") or "#888888"
+                            l_size = edge["size"]
+                            if l_name not in langs_agg:
+                                langs_agg[l_name] = {"size": 0, "color": l_color}
+                            langs_agg[l_name]["size"] += l_size
+                            
+                    total_lang_size = sum(info["size"] for info in langs_agg.values())
+                    langs_list = []
+                    for name, info in langs_agg.items():
+                        pct = (info["size"] / total_lang_size) * 100 if total_lang_size else 0
+                        langs_list.append((name, pct, info["color"]))
+                    langs_list.sort(key=lambda x: x[1], reverse=True)
+                    if langs_list:
+                        languages = langs_list
                         
-                        path_points = []
-                        for i, val in enumerate(weekly_contributions):
-                            x = i * dx
-                            y = 100.0 - (val / max_val) * 90.0
-                            path_points.append((x, y))
+                    sorted_repos = sorted(repos_nodes, key=lambda x: x.get("stargazerCount", 0), reverse=True)
+                    top_repos_list = []
+                    for r in sorted_repos[:4]:
+                        r_name = r.get("name")
+                        r_stars = r.get("stargazerCount", 0)
+                        r_lang = r.get("primaryLanguage")
+                        r_lang_name = r_lang.get("name") if r_lang else "Unknown"
+                        top_repos_list.append((r_name, r_stars, r_lang_name))
+                    if top_repos_list:
+                        top_repos = top_repos_list
                         
-                        stroke_parts = [f"M{path_points[0][0]:.1f},{path_points[0][1]:.1f}"]
-                        for x, y in path_points[1:]:
-                            stroke_parts.append(f"L{x:.1f},{y:.1f}")
-                        stroke_d = "".join(stroke_parts)
-                        chart_d = f"{stroke_d}L380.0,110.0L0.0,110.0Z"
+                    parsed_contributions = []
+                    parsed_dates = []
+                    total_calendar_commits = 0
+                    for yr in range(created_year, current_year + 1):
+                        cal = user_res.get(f"y{yr}", {}).get("contributionCalendar", {})
+                        total_calendar_commits += cal.get("totalContributions", 0)
+                        weeks_data = cal.get("weeks", [])
+                        for w in weeks_data:
+                            days = w.get("contributionDays", [])
+                            if days:
+                                parsed_contributions.append(sum(d.get("contributionCount", 0) for d in days))
+                                parsed_dates.append(datetime.strptime(days[0]["date"], "%Y-%m-%d"))
+                                
+                    if parsed_contributions:
+                        all_weeks_contributions = parsed_contributions
+                        all_weeks_dates = parsed_dates
                         
-                        # Build month labels dynamically
-                        month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-                        month_labels = []
-                        last_month = None
-                        for i, dt in enumerate(week_dates):
-                            m_name = month_names[dt.month - 1]
-                            if m_name != last_month:
-                                month_labels.append((i, m_name))
-                                last_month = m_name
+                    if total_commits == 0:
+                        total_commits = total_calendar_commits
+                    if total_commits > 0:
+                        commits = str(total_commits)
                         
-                        # Build XML elements for months
-                        labels_xml = []
-                        for idx, name in month_labels:
-                            x_pos = idx * dx
-                            labels_xml.append(
-                                f'<text x="{x_pos:.1f}" y="120" fill="{COLORS["green"]}" opacity="0.6" font-size="8" text-anchor="middle" class="monospace">{name}</text>'
-                            )
-                            labels_xml.append(
-                                f'<line x1="{x_pos:.1f}" y1="105" x2="{x_pos:.1f}" y2="110" stroke="{COLORS["green"]}" stroke-width="0.5" opacity="0.3" />'
-                            )
-                        month_labels_xml = "\n".join(labels_xml)
-                        
+                    rank_score = total_stars * 10 + int(commits) * 0.5 + int(prs) * 2 + int(issues) * 0.5 + len(repos_nodes) * 5
+                    if rank_score > 5000: rank = "S"
+                    elif rank_score > 3000: rank = "A+"
+                    elif rank_score > 1000: rank = "A"
+                    elif rank_score > 500: rank = "A-"
+                    elif rank_score > 250: rank = "B+"
+                    elif rank_score > 100: rank = "B"
+                    else: rank = "C"
+                    
         except Exception as e:
             print(f"Error fetching live GitHub data: {e}")
-            
+
     commits = commits.replace(",", "")
     prs = prs.replace(",", "")
-    return commits, repos, joined, prs, chart_d, month_labels_xml
+    issues = issues.replace(",", "")
+    stars = stars.replace(",", "")
+    contribs = repos
+
+    return (
+        commits, repos, joined, prs, issues, stars, contribs, rank,
+        top_repos, languages,
+        all_weeks_contributions, all_weeks_dates
+    )
 
 def get_grid_reveal_xml(width, height, start_delay):
     cols, rows = 4, 4
@@ -736,65 +807,202 @@ def generate_stack_xml_elements(embeds):
     return elements
 
 def generate_metrics_xml_elements():
-    commits, repos, joined, prs, chart_d, month_labels_xml = parse_github_stats_and_chart()
-    
-    import re
-    parts = re.split(r'L380(?:\.0)?,', chart_d)
-    stroke_d = parts[0] if parts else chart_d
-    
-    details_xml = f"""<g transform="translate(15, 45)">
-    <!-- User Stats List -->
-    <g transform="translate(15, 40)" font-size="12" class="monospace">
-      <text x="0" y="0" class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="150" class="text-white" font-weight="normal">{commits}</tspan></text>
-      <text x="0" y="25" class="text-green" font-weight="bold">PUBLIC REPOS:<tspan x="150" class="text-white" font-weight="normal">{repos}</tspan></text>
-      <text x="0" y="50" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="150" class="text-white" font-weight="normal">{joined}</tspan></text>
-      <text x="0" y="75" class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="150" class="text-white" font-weight="normal">{prs}</tspan></text>
-    </g>
+    (
+        commits, repos, joined, prs, issues, stars, contribs, rank,
+        top_repos, languages,
+        all_weeks_contributions, all_weeks_dates
+    ) = parse_github_stats_and_chart()
 
-    <!-- Glowing chart gradient definition -->
-    <defs>
-      <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="{COLORS['green']}" stop-opacity="0.35"/>
-        <stop offset="100%" stop-color="{COLORS['green']}" stop-opacity="0.0"/>
-      </linearGradient>
-    </defs>
+    # ── Chart path builder ─────────────────────────────────────────────
+    def build_paths(vals, w, h):
+        """Return (fill_d, stroke_d) SVG path strings."""
+        if not vals or len(vals) < 2:
+            return f"M0,{h} L{w},{h} Z", f"M0,{h} L{w},{h}"
+        max_v = max(vals) or 1
+        n = len(vals)
+        pts = [(i * w / (n - 1), h - (v / max_v) * (h * 0.88))
+               for i, v in enumerate(vals)]
+        stroke_parts = [f"M{pts[0][0]:.1f},{pts[0][1]:.1f}"] + [
+            f"L{x:.1f},{y:.1f}" for x, y in pts[1:]
+        ]
+        stroke_d = "".join(stroke_parts)
+        fill_d = (stroke_d + f" L{pts[-1][0]:.1f},{h:.1f}"
+                  + f" L{pts[0][0]:.1f},{h:.1f} Z")
+        return fill_d, stroke_d
 
-    <!-- Custom Neon Commits Chart -->
-    <svg x="260" y="15" width="495" height="145" viewBox="0 0 380 125" preserveAspectRatio="none">
-      <!-- Cyberpunk Grid Lines -->
-      <line x1="0" y1="27.5" x2="380" y2="27.5" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
-      <line x1="0" y1="55" x2="380" y2="55" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
-      <line x1="0" y1="82.5" x2="380" y2="82.5" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
-      
-      <line x1="95" y1="0" x2="95" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
-      <line x1="190" y1="0" x2="190" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
-      <line x1="285" y1="0" x2="285" y2="110" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.1" stroke-dasharray="2 2" />
+    # ── Graph 1: last 52 weeks (this year) ────────────────────────────
+    G1_W, G1_H = 345, 100
+    g1_vals  = (all_weeks_contributions[-52:] if len(all_weeks_contributions) >= 52
+                else all_weeks_contributions)
+    g1_dates = (all_weeks_dates[-52:] if len(all_weeks_dates) >= 52
+                else all_weeks_dates)
+    g1_fill, g1_stroke = build_paths(g1_vals, G1_W, G1_H)
 
-      <!-- Month Labels & Ticks -->
-{month_labels_xml}
+    # ── Graph 2: all time ──────────────────────────────────────────────
+    G2_W, G2_H = 740, 120
+    g2_fill, g2_stroke = build_paths(all_weeks_contributions, G2_W, G2_H)
 
-      <!-- Chart Area Fill -->
-      <path d="{chart_d}" fill="url(#chart-grad)" stroke="none" class="chart-fill" />
-      
-      <!-- Chart Line Stroke -->
-      <path d="{stroke_d}" fill="none" stroke="{COLORS['green']}" stroke-width="2" class="chart-line" />
-    </svg>
-  </g>"""
+    # ── Month labels for Graph 1 (no overlap: min 4 weeks apart) ──────
+    def make_month_labels(dates, w, chart_h):
+        if not dates:
+            return ""
+        n = len(dates)
+        out, last_m, last_i = [], -1, -999
+        for i, dt in enumerate(dates):
+            if dt.month != last_m and (i - last_i) >= 4:
+                x = i * w / (n - 1) if n > 1 else 0
+                out.append(
+                    f'<text x="{x:.1f}" y="{chart_h + 15}"'
+                    f' class="monospace text-green-dim" font-size="8"'
+                    f' text-anchor="middle">{dt.strftime("%b")}</text>'
+                )
+                last_m, last_i = dt.month, i
+        return "\n        ".join(out)
 
-    stats_xml = get_inline_svg_xml("profile/stats.svg", 17, 245, 407, 170)
-    langs_xml = get_inline_svg_xml("profile/languages.svg", 474, 245, 309, 170)
+    # ── Year labels for Graph 2 ────────────────────────────────────────
+    def make_year_labels(dates, w, chart_h):
+        if not dates:
+            return ""
+        n = len(dates)
+        out, last_y = [], -1
+        for i, dt in enumerate(dates):
+            if dt.year != last_y:
+                x = i * w / (n - 1) if n > 1 else 0
+                out.append(
+                    f'<line x1="{x:.1f}" y1="0" x2="{x:.1f}" y2="{chart_h}"'
+                    f' stroke="{COLORS["green"]}" stroke-width="0.5"'
+                    f' opacity="0.18" stroke-dasharray="2 2"/>'
+                )
+                out.append(
+                    f'<text x="{x + 2:.1f}" y="{chart_h + 13}"'
+                    f' class="monospace text-green-dim" font-size="7.5"'
+                    f' text-anchor="start">{dt.year}</text>'
+                )
+                last_y = dt.year
+        return "\n        ".join(out)
 
+    g1_months_xml = make_month_labels(g1_dates, G1_W, G1_H)
+    g2_years_xml  = make_year_labels(all_weeks_dates, G2_W, G2_H)
+
+    # ── Language # bars (up to 5 langs, full-width) ────────────────────
+    BAR_CHARS = 40
+    BAR_W     = 335
+    top_langs = languages[:5]
+    langs_xml = ""
+    for idx, (l_name, l_pct, l_col) in enumerate(top_langs):
+        y_lbl  = 46 + idx * 23
+        y_bar  = y_lbl + 11
+        filled = max(0, min(BAR_CHARS, round((l_pct / 100.0) * BAR_CHARS)))
+        empty  = BAR_CHARS - filled
+        hash_s = "#" * filled
+        dot_s  = ":" * empty
+        langs_xml += (
+            f'\n      <text x="20" y="{y_lbl}" font-size="9.5"'
+            f' class="monospace text-white">{xml_escape(l_name)}'
+            f' <tspan fill="{l_col}" font-weight="bold">({l_pct:.1f}%)</tspan></text>'
+            f'\n      <text x="20" y="{y_bar}" font-size="9"'
+            f' font-family="monospace, Courier, fixed"'
+            f' textLength="{BAR_W}" lengthAdjust="spacing">'
+            f'<tspan fill="{l_col}">{hash_s}</tspan>'
+            f'<tspan fill="{COLORS["green"]}" opacity="0.18">{dot_s}</tspan></text>'
+        )
+
+    # ── Top Repositories ───────────────────────────────────────────────
+    def trunc(name, mx=20):
+        return name[:mx] + ".." if len(name) > mx else name
+
+    repos_xml = ""
+    for ri in range(4):
+        if ri < len(top_repos):
+            rname  = xml_escape(trunc(top_repos[ri][0]))
+            rstars = top_repos[ri][1]
+            rlang  = xml_escape(top_repos[ri][2] or "Unknown")
+        else:
+            rname, rstars, rlang = "-", 0, "-"
+        y_r = 50 + ri * 29
+        repos_xml += (
+            f'\n      <text x="20" y="{y_r}" font-size="10"'
+            f' class="monospace text-green" font-weight="bold">{rname}</text>'
+            f'\n      <text x="238" y="{y_r}" font-size="10"'
+            f' class="monospace text-gold">&#x2605; {rstars}</text>'
+            f'\n      <text x="285" y="{y_r}" font-size="9"'
+            f' class="monospace text-white" opacity="0.55">[{rlang}]</text>'
+        )
+
+    # Layout: header=30|pad=12|row1=200|gap=12|row2=160|gap=12|row3=207|pad=12 = 645
     return f"""  <!-- Section Header -->
   <rect x="2" y="0" width="796" height="30" fill="{COLORS['header_fill']}" stroke="{COLORS['green']}" stroke-width="2"/>
   <text x="20" y="21" class="monospace text-gold" font-size="16" font-weight="bold">[ BIOMETRIC METRICS &amp; PERFORMANCE GRAPH ]</text>
 
-  <!-- Summary Card Bounding Box -->
-  <rect x="15" y="45" width="770" height="180" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
-  {details_xml}
+  <!-- ═══ ROW 1: GitHub Stats (left) + Graph 1 This Year (right) ═══ -->
+  <rect x="15" y="42" width="375" height="200" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
+  <g transform="translate(15,42)">
+    <g transform="translate(15,28)" font-size="11" class="monospace">
+      <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="148" class="text-white" font-weight="normal">{stars}</tspan></text>
+      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="148" class="text-white" font-weight="normal">{commits}</tspan></text>
+      <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="148" class="text-white" font-weight="normal">{prs}</tspan></text>
+      <text x="0" y="76"  class="text-green" font-weight="bold">TOTAL ISSUES:<tspan x="148" class="text-white" font-weight="normal">{issues}</tspan></text>
+      <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="148" class="text-white" font-weight="normal">{contribs}</tspan></text>
+      <text x="0" y="120" class="text-green" font-weight="bold">YEARS ACTIVE:<tspan x="148" class="text-white" font-weight="normal">{joined}</tspan></text>
+    </g>
+    <g transform="translate(308,100)">
+      <circle cx="0" cy="0" r="34" fill="none" stroke="{COLORS['gold']}" stroke-width="4" opacity="0.2"/>
+      <circle cx="0" cy="0" r="34" fill="none" stroke="{COLORS['gold']}" stroke-width="4" stroke-dasharray="200" stroke-dashoffset="50" stroke-linecap="round"/>
+      <text x="0" y="8"  class="monospace text-gold" font-size="20" text-anchor="middle" font-weight="bold">{rank}</text>
+      <text x="0" y="48" class="monospace text-gold" font-size="8"  text-anchor="middle">RANK</text>
+    </g>
+  </g>
 
-  {stats_xml}
+  <rect x="400" y="42" width="383" height="200" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
+  <g transform="translate(400,42)">
+    <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ COMMITS - THIS YEAR ]</text>
+    <defs>
+      <linearGradient id="chart-grad-ly" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="{COLORS['green']}" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="{COLORS['green']}" stop-opacity="0.0"/>
+      </linearGradient>
+    </defs>
+    <svg x="18" y="30" width="{G1_W}" height="155" viewBox="0 0 {G1_W} 155" preserveAspectRatio="none">
+      <line x1="0" y1="{int(G1_H*0.33)}" x2="{G1_W}" y2="{int(G1_H*0.33)}" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
+      <line x1="0" y1="{int(G1_H*0.66)}" x2="{G1_W}" y2="{int(G1_H*0.66)}" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
+      {g1_months_xml}
+      <path d="{g1_fill}" fill="url(#chart-grad-ly)" stroke="none" class="chart-fill"/>
+      <path d="{g1_stroke}" fill="none" stroke="{COLORS['green']}" stroke-width="2" class="chart-line-g1"/>
+    </svg>
+  </g>
 
-  {langs_xml}"""
+  <!-- ═══ ROW 2: Languages (left) + Top Repositories (right) ═══ -->
+  <rect x="15" y="254" width="375" height="160" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
+  <g transform="translate(15,254)">
+    <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ MOST USED LANGUAGES ]</text>
+    {langs_xml}
+  </g>
+
+  <rect x="400" y="254" width="383" height="160" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
+  <g transform="translate(400,254)">
+    <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ TOP REPOSITORIES ]</text>
+    {repos_xml}
+  </g>
+
+  <!-- ═══ ROW 3: All-Time Graph (full width) ═══ -->
+  <rect x="15" y="426" width="770" height="207" fill="none" stroke="{COLORS['green']}" stroke-width="2"/>
+  <g transform="translate(15,426)">
+    <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ ALL-TIME CONTRIBUTION GRAPH ]</text>
+    <defs>
+      <linearGradient id="chart-grad-at" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="{COLORS['green']}" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="{COLORS['green']}" stop-opacity="0.0"/>
+      </linearGradient>
+    </defs>
+    <svg x="15" y="30" width="{G2_W}" height="165" viewBox="0 0 {G2_W} 165" preserveAspectRatio="none">
+      <line x1="0" y1="{int(G2_H*0.33)}" x2="{G2_W}" y2="{int(G2_H*0.33)}" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
+      <line x1="0" y1="{int(G2_H*0.66)}" x2="{G2_W}" y2="{int(G2_H*0.66)}" stroke="{COLORS['green']}" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
+      {g2_years_xml}
+      <path d="{g2_fill}" fill="url(#chart-grad-at)" stroke="none" class="chart-fill"/>
+      <path d="{g2_stroke}" fill="none" stroke="{COLORS['green']}" stroke-width="2" class="chart-line-g2"/>
+    </svg>
+  </g>"""
+
 
 def generate_dashboard_svg(header_elems, stack_elems, metrics_elems):
     h_height = CONFIG["layout"]["header_height"]
@@ -848,17 +1056,23 @@ def generate_dashboard_svg(header_elems, stack_elems, metrics_elems):
       100% {{ opacity: 0; }}
     }}
     @keyframes drawPath {{
-      from {{ stroke-dashoffset: 1200; }}
+      from {{ stroke-dashoffset: 6000; }}
       to {{ stroke-dashoffset: 0; }}
     }}
     @keyframes fadeInFill {{
       from {{ opacity: 0; }}
       to {{ opacity: 1; }}
     }}
-    .chart-line {{
-      stroke-dasharray: 1200;
-      stroke-dashoffset: 1200;
+    .chart-line-g1 {{
+      stroke-dasharray: 6000;
+      stroke-dashoffset: 6000;
       animation: drawPath 2.5s ease-out forwards;
+      animation-delay: 1.5s;
+    }}
+    .chart-line-g2 {{
+      stroke-dasharray: 6000;
+      stroke-dashoffset: 6000;
+      animation: drawPath 4.0s ease-out forwards;
       animation-delay: 1.5s;
     }}
     .chart-fill {{
@@ -870,7 +1084,7 @@ def generate_dashboard_svg(header_elems, stack_elems, metrics_elems):
 
   <!-- Background and Full Borders -->
   <rect x="0" y="0" width="800" height="{total_height}" fill="{COLORS['background']}"/>
-  <rect x="0" y="0" width="800" height="{total_height}" fill="url(#bg-grid)"/>
+  <rect x="0" y="0" width="800" height="{h_height + s_height}" fill="url(#bg-grid)"/>
   <rect x="0" y="0" width="800" height="{total_height}" stroke="{COLORS['green']}" stroke-width="4" fill="none"/>
 
   <!-- Part 1: Header (0 to {h_height}) -->
@@ -1002,17 +1216,23 @@ def main():
     .text-gold {{ fill: {COLORS['gold']}; }}
     .text-white {{ fill: {COLORS['white']}; }}
     @keyframes drawPath {{
-      from {{ stroke-dashoffset: 1200; }}
+      from {{ stroke-dashoffset: 6000; }}
       to {{ stroke-dashoffset: 0; }}
     }}
     @keyframes fadeInFill {{
       from {{ opacity: 0; }}
       to {{ opacity: 1; }}
     }}
-    .chart-line {{
-      stroke-dasharray: 1200;
-      stroke-dashoffset: 1200;
+    .chart-line-g1 {{
+      stroke-dasharray: 6000;
+      stroke-dashoffset: 6000;
       animation: drawPath 2.5s ease-out forwards;
+      animation-delay: 1.5s;
+    }}
+    .chart-line-g2 {{
+      stroke-dasharray: 6000;
+      stroke-dashoffset: 6000;
+      animation: drawPath 4.0s ease-out forwards;
       animation-delay: 1.5s;
     }}
     .chart-fill {{
@@ -1022,7 +1242,6 @@ def main():
     }}
   </style>
   <rect x="0" y="0" width="800" height="{m_height}" fill="{COLORS['background']}"/>
-  <rect x="0" y="0" width="800" height="{m_height}" fill="url(#bg-grid)"/>
   <path d="M 0,0 L 0,{m_height} L 800,{m_height} L 800,0" stroke="{COLORS['green']}" stroke-width="4" fill="none"/>
 {metrics_elems}
 </svg>"""
