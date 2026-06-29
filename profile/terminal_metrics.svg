@@ -49,7 +49,7 @@
     <!-- Stats list -->
     <g transform="translate(15,35)" font-size="11" class="monospace">
       <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="120" class="text-white" font-weight="normal">92</tspan></text>
-      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="120" class="text-white" font-weight="normal">6225</tspan></text>
+      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="120" class="text-white" font-weight="normal">6226</tspan></text>
       <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="120" class="text-white" font-weight="normal">115</tspan></text>
       <text x="0" y="76"  class="text-green" font-weight="bold">TOTAL ISSUES:<tspan x="120" class="text-white" font-weight="normal">6</tspan></text>
       <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="120" class="text-white" font-weight="normal">28</tspan></text>
