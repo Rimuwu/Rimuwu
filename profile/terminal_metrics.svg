@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="645" viewBox="0 0 800 645">
   <defs>
     <pattern id="bg-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#4dbb7a" stroke-width="0.5" opacity="0.25" />
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#7ab868" stroke-width="0.5" opacity="0.2" />
     </pattern>
   </defs>
   <style>
     .monospace { font-family: monospace, Courier, fixed; }
-    .text-green { fill: #4dbb7a; }
-    .text-green-dim { fill: #4dbb7a; opacity: 0.65; }
-    .text-gold { fill: #c9a84c; }
-    .text-white { fill: #d4e8d4; }
+    .text-green { fill: #7ab868; }
+    .text-green-dim { fill: #7ab868; opacity: 0.65; }
+    .text-gold { fill: #c99a3a; }
+    .text-white { fill: #e8dfc0; }
     @keyframes drawPath {
       from { stroke-dashoffset: 6000; }
       to { stroke-dashoffset: 0; }
@@ -36,48 +36,48 @@
       animation-delay: 3.5s;
     }
   </style>
-  <rect x="0" y="0" width="800" height="645" fill="#0b1410"/>
-  <path d="M 0,0 L 0,645 L 800,645 L 800,0" stroke="#4dbb7a" stroke-width="4" fill="none"/>
+  <rect x="0" y="0" width="800" height="645" fill="#110e06"/>
+  <path d="M 0,0 L 0,645 L 800,645 L 800,0" stroke="#7ab868" stroke-width="4" fill="none"/>
   <!-- Section Header -->
-  <rect x="2" y="0" width="796" height="30" fill="#111f16" stroke="#4dbb7a" stroke-width="2"/>
+  <rect x="2" y="0" width="796" height="30" fill="#1a1508" stroke="#7ab868" stroke-width="2"/>
   <text x="20" y="21" class="monospace text-gold" font-size="16" font-weight="bold">[ BIOMETRIC METRICS &amp; PERFORMANCE GRAPH ]</text>
 
   <!-- ═══ ROW 1: GitHub Stats (left) + Graph 1 This Year (right) ═══ -->
-  <rect x="15" y="42" width="375" height="200" fill="none" stroke="#4dbb7a" stroke-width="2"/>
+  <rect x="15" y="42" width="375" height="200" fill="none" stroke="#7ab868" stroke-width="2"/>
   <g transform="translate(15,42)">
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ GITHUB STATISTICS ]</text>
     <!-- Stats list -->
     <g transform="translate(15,35)" font-size="11" class="monospace">
       <text x="0" y="10"  class="text-green" font-weight="bold">TOTAL STARS:<tspan x="120" class="text-white" font-weight="normal">92</tspan></text>
-      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="120" class="text-white" font-weight="normal">6308</tspan></text>
-      <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="120" class="text-white" font-weight="normal">116</tspan></text>
+      <text x="0" y="32"  class="text-green" font-weight="bold">TOTAL COMMITS:<tspan x="120" class="text-white" font-weight="normal">6316</tspan></text>
+      <text x="0" y="54"  class="text-green" font-weight="bold">PULL REQUESTS:<tspan x="120" class="text-white" font-weight="normal">117</tspan></text>
       <text x="0" y="76"  class="text-green" font-weight="bold">TOTAL ISSUES:<tspan x="120" class="text-white" font-weight="normal">6</tspan></text>
       <text x="0" y="98"  class="text-green" font-weight="bold">CONTRIBUTED TO:<tspan x="120" class="text-white" font-weight="normal">28</tspan></text>
       <text x="0" y="120" class="text-green" font-weight="bold">CREATED:<tspan x="120" class="text-white" font-weight="normal">8 years ago</tspan></text>
     </g>
     <!-- Rank badge (right column, vertically centered) -->
     <g transform="translate(295,90)">
-      <circle cx="0" cy="0" r="48" fill="none" stroke="#c9a84c" stroke-width="4.5" opacity="0.18"/>
-      <circle cx="0" cy="0" r="48" fill="none" stroke="#c9a84c" stroke-width="4.5"
+      <circle cx="0" cy="0" r="48" fill="none" stroke="#c99a3a" stroke-width="4.5" opacity="0.18"/>
+      <circle cx="0" cy="0" r="48" fill="none" stroke="#c99a3a" stroke-width="4.5"
               stroke-dasharray="301" stroke-dashoffset="75" stroke-linecap="round"/>
       <text x="0" y="10"  class="monospace text-gold" font-size="30" text-anchor="middle" font-weight="bold">A+</text>
       <text x="0" y="66" class="monospace text-gold" font-size="12" text-anchor="middle">RANK</text>
     </g>
   </g>
 
-  <rect x="400" y="42" width="383" height="200" fill="none" stroke="#4dbb7a" stroke-width="2"/>
+  <rect x="400" y="42" width="383" height="200" fill="none" stroke="#7ab868" stroke-width="2"/>
   <g transform="translate(400,42)">
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ COMMITS - THIS YEAR ]</text>
-    <text x="363" y="22" class="monospace text-green" font-size="10" text-anchor="end" font-weight="bold">1230 commits</text>
+    <text x="363" y="22" class="monospace text-green" font-size="10" text-anchor="end" font-weight="bold">1238 commits</text>
     <defs>
       <linearGradient id="chart-grad-ly" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#4dbb7a" stop-opacity="0.35"/>
-        <stop offset="100%" stop-color="#4dbb7a" stop-opacity="0.0"/>
+        <stop offset="0%" stop-color="#7ab868" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#7ab868" stop-opacity="0.0"/>
       </linearGradient>
     </defs>
     <svg x="18" y="30" width="345" height="155" viewBox="0 0 345 155" preserveAspectRatio="none">
-      <line x1="0" y1="33" x2="345" y2="33" stroke="#4dbb7a" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
-      <line x1="0" y1="66" x2="345" y2="66" stroke="#4dbb7a" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
+      <line x1="0" y1="33" x2="345" y2="33" stroke="#7ab868" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
+      <line x1="0" y1="66" x2="345" y2="66" stroke="#7ab868" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
       <text x="0.0" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Jan</text>
         <text x="27.1" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Feb</text>
         <text x="54.1" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Mar</text>
@@ -90,25 +90,25 @@
         <text x="263.8" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Oct</text>
         <text x="290.9" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Nov</text>
         <text x="324.7" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Dec</text>
-      <path d="M0.0,100.0L6.8,80.6L13.5,57.5L20.3,90.9L27.1,90.3L33.8,40.5L40.6,88.5L47.4,65.4L54.1,72.1L60.9,75.7L67.6,43.0L74.4,74.5L81.2,41.7L87.9,12.0L94.7,53.3L101.5,93.3L108.2,90.3L115.0,83.0L121.8,84.2L128.5,98.2L135.3,84.2L142.1,47.8L148.8,75.1L155.6,62.4L162.4,80.6L169.1,72.7L175.9,95.8L182.6,100.0L189.4,100.0L196.2,100.0L202.9,100.0L209.7,100.0L216.5,100.0L223.2,100.0L230.0,100.0L236.8,100.0L243.5,100.0L250.3,100.0L257.1,100.0L263.8,100.0L270.6,100.0L277.4,100.0L284.1,100.0L290.9,100.0L297.6,100.0L304.4,100.0L311.2,100.0L317.9,100.0L324.7,100.0L331.5,100.0L338.2,100.0L345.0,100.0 L345.0,100.0 L0.0,100.0 Z" fill="url(#chart-grad-ly)" stroke="none" class="chart-fill"/>
-      <path d="M0.0,100.0L6.8,80.6L13.5,57.5L20.3,90.9L27.1,90.3L33.8,40.5L40.6,88.5L47.4,65.4L54.1,72.1L60.9,75.7L67.6,43.0L74.4,74.5L81.2,41.7L87.9,12.0L94.7,53.3L101.5,93.3L108.2,90.3L115.0,83.0L121.8,84.2L128.5,98.2L135.3,84.2L142.1,47.8L148.8,75.1L155.6,62.4L162.4,80.6L169.1,72.7L175.9,95.8L182.6,100.0L189.4,100.0L196.2,100.0L202.9,100.0L209.7,100.0L216.5,100.0L223.2,100.0L230.0,100.0L236.8,100.0L243.5,100.0L250.3,100.0L257.1,100.0L263.8,100.0L270.6,100.0L277.4,100.0L284.1,100.0L290.9,100.0L297.6,100.0L304.4,100.0L311.2,100.0L317.9,100.0L324.7,100.0L331.5,100.0L338.2,100.0L345.0,100.0" fill="none" stroke="#4dbb7a" stroke-width="2" class="chart-line-g1"/>
+      <path d="M0.0,100.0L6.8,80.6L13.5,57.5L20.3,90.9L27.1,90.3L33.8,40.5L40.6,88.5L47.4,65.4L54.1,72.1L60.9,75.7L67.6,43.0L74.4,74.5L81.2,41.7L87.9,12.0L94.7,53.3L101.5,93.3L108.2,90.3L115.0,83.0L121.8,84.2L128.5,98.2L135.3,84.2L142.1,47.8L148.8,75.1L155.6,62.4L162.4,80.6L169.1,72.7L175.9,90.9L182.6,100.0L189.4,100.0L196.2,100.0L202.9,100.0L209.7,100.0L216.5,100.0L223.2,100.0L230.0,100.0L236.8,100.0L243.5,100.0L250.3,100.0L257.1,100.0L263.8,100.0L270.6,100.0L277.4,100.0L284.1,100.0L290.9,100.0L297.6,100.0L304.4,100.0L311.2,100.0L317.9,100.0L324.7,100.0L331.5,100.0L338.2,100.0L345.0,100.0 L345.0,100.0 L0.0,100.0 Z" fill="url(#chart-grad-ly)" stroke="none" class="chart-fill"/>
+      <path d="M0.0,100.0L6.8,80.6L13.5,57.5L20.3,90.9L27.1,90.3L33.8,40.5L40.6,88.5L47.4,65.4L54.1,72.1L60.9,75.7L67.6,43.0L74.4,74.5L81.2,41.7L87.9,12.0L94.7,53.3L101.5,93.3L108.2,90.3L115.0,83.0L121.8,84.2L128.5,98.2L135.3,84.2L142.1,47.8L148.8,75.1L155.6,62.4L162.4,80.6L169.1,72.7L175.9,90.9L182.6,100.0L189.4,100.0L196.2,100.0L202.9,100.0L209.7,100.0L216.5,100.0L223.2,100.0L230.0,100.0L236.8,100.0L243.5,100.0L250.3,100.0L257.1,100.0L263.8,100.0L270.6,100.0L277.4,100.0L284.1,100.0L290.9,100.0L297.6,100.0L304.4,100.0L311.2,100.0L317.9,100.0L324.7,100.0L331.5,100.0L338.2,100.0L345.0,100.0" fill="none" stroke="#7ab868" stroke-width="2" class="chart-line-g1"/>
     </svg>
   </g>
 
   <!-- ═══ ROW 2: Languages (left) + Top Repositories (right) ═══ -->
-  <rect x="15" y="254" width="375" height="160" fill="none" stroke="#4dbb7a" stroke-width="2"/>
+  <rect x="15" y="254" width="375" height="160" fill="none" stroke="#7ab868" stroke-width="2"/>
   <g transform="translate(15,254)">
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ MOST USED LANGUAGES ]</text>
     
       <text x="20" y="48" font-size="10" class="monospace text-white">Python <tspan fill="#3572A5" font-weight="bold">(72.5%)</tspan></text>
-      <text x="20" y="62" font-size="9" font-family="monospace, Courier, fixed" textLength="335" lengthAdjust="spacing"><tspan fill="#3572A5">#############################</tspan><tspan fill="#4dbb7a" opacity="0.18">:::::::::::</tspan></text>
+      <text x="20" y="62" font-size="9" font-family="monospace, Courier, fixed" textLength="335" lengthAdjust="spacing"><tspan fill="#3572A5">#############################</tspan><tspan fill="#7ab868" opacity="0.18">:::::::::::</tspan></text>
       <text x="20" y="83" font-size="10" class="monospace text-white">Vue <tspan fill="#41b883" font-weight="bold">(11.8%)</tspan></text>
-      <text x="20" y="97" font-size="9" font-family="monospace, Courier, fixed" textLength="335" lengthAdjust="spacing"><tspan fill="#41b883">#####</tspan><tspan fill="#4dbb7a" opacity="0.18">:::::::::::::::::::::::::::::::::::</tspan></text>
+      <text x="20" y="97" font-size="9" font-family="monospace, Courier, fixed" textLength="335" lengthAdjust="spacing"><tspan fill="#41b883">#####</tspan><tspan fill="#7ab868" opacity="0.18">:::::::::::::::::::::::::::::::::::</tspan></text>
       <text x="20" y="118" font-size="10" class="monospace text-white">GDScript <tspan fill="#355570" font-weight="bold">(8.6%)</tspan></text>
-      <text x="20" y="132" font-size="9" font-family="monospace, Courier, fixed" textLength="335" lengthAdjust="spacing"><tspan fill="#355570">###</tspan><tspan fill="#4dbb7a" opacity="0.18">:::::::::::::::::::::::::::::::::::::</tspan></text>
+      <text x="20" y="132" font-size="9" font-family="monospace, Courier, fixed" textLength="335" lengthAdjust="spacing"><tspan fill="#355570">###</tspan><tspan fill="#7ab868" opacity="0.18">:::::::::::::::::::::::::::::::::::::</tspan></text>
   </g>
 
-  <rect x="400" y="254" width="383" height="160" fill="none" stroke="#4dbb7a" stroke-width="2"/>
+  <rect x="400" y="254" width="383" height="160" fill="none" stroke="#7ab868" stroke-width="2"/>
   <g transform="translate(400,254)">
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ TOP REPOSITORIES ]</text>
     
@@ -127,36 +127,36 @@
   </g>
 
   <!-- ═══ ROW 3: Last 4 Years Graph + All-Time Stats (right sidebar) ═══ -->
-  <rect x="15" y="426" width="770" height="207" fill="none" stroke="#4dbb7a" stroke-width="2"/>
+  <rect x="15" y="426" width="770" height="207" fill="none" stroke="#7ab868" stroke-width="2"/>
   <g transform="translate(15,426)">
     <text x="20" y="22" class="monospace text-gold" font-size="12" font-weight="bold">[ CONTRIBUTION GRAPH - LAST 4 YEARS ]</text>
     <defs>
       <linearGradient id="chart-grad-at" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#4dbb7a" stop-opacity="0.35"/>
-        <stop offset="100%" stop-color="#4dbb7a" stop-opacity="0.0"/>
+        <stop offset="0%" stop-color="#7ab868" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#7ab868" stop-opacity="0.0"/>
       </linearGradient>
     </defs>
     <!-- Chart: x=15 y=30, width=540=540, height=165 → right edge at x=555 -->
     <svg x="15" y="30" width="540" height="165" viewBox="0 0 540 165" preserveAspectRatio="none">
-      <line x1="0" y1="39" x2="540" y2="39" stroke="#4dbb7a" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
-      <line x1="0" y1="79" x2="540" y2="79" stroke="#4dbb7a" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
-      <line x1="0.0" y1="0" x2="0.0" y2="120" stroke="#4dbb7a" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 2"/>
+      <line x1="0" y1="39" x2="540" y2="39" stroke="#7ab868" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
+      <line x1="0" y1="79" x2="540" y2="79" stroke="#7ab868" stroke-width="0.5" opacity="0.08" stroke-dasharray="2 2"/>
+      <line x1="0.0" y1="0" x2="0.0" y2="120" stroke="#7ab868" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 2"/>
         <text x="2.0" y="133" class="monospace text-green-dim" font-size="7.5" text-anchor="start">2023</text>
-        <line x1="127.8" y1="0" x2="127.8" y2="120" stroke="#4dbb7a" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 2"/>
+        <line x1="127.8" y1="0" x2="127.8" y2="120" stroke="#7ab868" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 2"/>
         <text x="129.8" y="133" class="monospace text-green-dim" font-size="7.5" text-anchor="start">2024</text>
-        <line x1="266.1" y1="0" x2="266.1" y2="120" stroke="#4dbb7a" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 2"/>
+        <line x1="266.1" y1="0" x2="266.1" y2="120" stroke="#7ab868" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 2"/>
         <text x="268.1" y="133" class="monospace text-green-dim" font-size="7.5" text-anchor="start">2025</text>
-        <line x1="404.3" y1="0" x2="404.3" y2="120" stroke="#4dbb7a" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 2"/>
+        <line x1="404.3" y1="0" x2="404.3" y2="120" stroke="#7ab868" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 2"/>
         <text x="406.3" y="133" class="monospace text-green-dim" font-size="7.5" text-anchor="start">2026</text>
-      <path d="M0.0,90.6L2.6,85.6L5.2,110.0L7.8,115.0L10.4,54.4L13.0,100.0L15.7,108.8L18.3,106.3L20.9,113.8L23.5,115.0L26.1,85.0L28.7,105.0L31.3,112.5L33.9,68.8L36.5,84.4L39.1,79.4L41.7,58.1L44.3,89.4L47.0,61.3L49.6,72.5L52.2,83.1L54.8,83.1L57.4,119.4L60.0,108.1L62.6,106.9L65.2,108.1L67.8,120.0L70.4,100.6L73.0,105.0L75.7,111.9L78.3,75.6L80.9,99.4L83.5,102.5L86.1,88.8L88.7,118.8L91.3,118.1L93.9,118.8L96.5,119.4L99.1,118.8L101.7,116.9L104.3,113.8L107.0,116.3L109.6,118.1L112.2,117.5L114.8,120.0L117.4,118.8L120.0,103.8L122.6,106.9L125.2,120.0L127.8,101.9L130.4,92.5L133.0,107.5L135.7,118.1L138.3,107.5L140.9,116.3L143.5,118.8L146.1,120.0L148.7,120.0L151.3,120.0L153.9,118.8L156.5,120.0L159.1,119.4L161.7,78.8L164.3,70.6L167.0,106.9L169.6,120.0L172.2,120.0L174.8,118.1L177.4,113.1L180.0,120.0L182.6,114.4L185.2,102.5L187.8,120.0L190.4,107.5L193.0,120.0L195.7,116.3L198.3,118.8L200.9,119.4L203.5,97.5L206.1,81.9L208.7,105.0L211.3,116.3L213.9,108.8L216.5,111.9L219.1,75.6L221.7,100.0L224.3,100.0L227.0,81.3L229.6,95.6L232.2,118.1L234.8,117.5L237.4,120.0L240.0,120.0L242.6,120.0L245.2,120.0L247.8,120.0L250.4,120.0L253.0,120.0L255.7,120.0L258.3,120.0L260.9,109.4L263.5,115.0L266.1,120.0L268.7,120.0L271.3,120.0L273.9,120.0L276.5,120.0L279.1,118.8L281.7,114.4L284.3,113.8L287.0,120.0L289.6,40.0L292.2,105.0L294.8,88.8L297.4,111.3L300.0,91.3L302.6,75.6L305.2,83.1L307.8,92.5L310.4,84.4L313.0,80.0L315.7,52.5L318.3,77.5L320.9,100.6L323.5,87.5L326.1,119.4L328.7,119.4L331.3,118.8L333.9,119.4L336.5,120.0L339.1,120.0L341.7,83.8L344.3,96.9L347.0,112.5L349.6,111.9L352.2,115.0L354.8,87.5L357.4,81.3L360.0,53.1L362.6,52.5L365.2,16.9L367.8,14.4L370.4,27.5L373.0,60.6L375.7,105.6L378.3,115.0L380.9,65.6L383.5,55.0L386.1,113.8L388.7,115.0L391.3,84.4L393.9,95.6L396.5,101.9L399.1,115.6L401.7,99.4L404.3,120.0L407.0,120.0L409.6,100.0L412.2,76.3L414.8,110.6L417.4,110.0L420.0,58.8L422.6,108.1L425.2,84.4L427.8,91.3L430.4,95.0L433.0,61.3L435.7,93.8L438.3,60.0L440.9,29.4L443.5,71.9L446.1,113.1L448.7,110.0L451.3,102.5L453.9,103.8L456.5,118.1L459.1,103.8L461.7,66.3L464.3,94.4L467.0,81.3L469.6,100.0L472.2,91.9L474.8,115.6L477.4,120.0L480.0,120.0L482.6,120.0L485.2,120.0L487.8,120.0L490.4,120.0L493.0,120.0L495.7,120.0L498.3,120.0L500.9,120.0L503.5,120.0L506.1,120.0L508.7,120.0L511.3,120.0L513.9,120.0L516.5,120.0L519.1,120.0L521.7,120.0L524.3,120.0L527.0,120.0L529.6,120.0L532.2,120.0L534.8,120.0L537.4,120.0L540.0,120.0 L540.0,120.0 L0.0,120.0 Z" fill="url(#chart-grad-at)" stroke="none" class="chart-fill"/>
-      <path d="M0.0,90.6L2.6,85.6L5.2,110.0L7.8,115.0L10.4,54.4L13.0,100.0L15.7,108.8L18.3,106.3L20.9,113.8L23.5,115.0L26.1,85.0L28.7,105.0L31.3,112.5L33.9,68.8L36.5,84.4L39.1,79.4L41.7,58.1L44.3,89.4L47.0,61.3L49.6,72.5L52.2,83.1L54.8,83.1L57.4,119.4L60.0,108.1L62.6,106.9L65.2,108.1L67.8,120.0L70.4,100.6L73.0,105.0L75.7,111.9L78.3,75.6L80.9,99.4L83.5,102.5L86.1,88.8L88.7,118.8L91.3,118.1L93.9,118.8L96.5,119.4L99.1,118.8L101.7,116.9L104.3,113.8L107.0,116.3L109.6,118.1L112.2,117.5L114.8,120.0L117.4,118.8L120.0,103.8L122.6,106.9L125.2,120.0L127.8,101.9L130.4,92.5L133.0,107.5L135.7,118.1L138.3,107.5L140.9,116.3L143.5,118.8L146.1,120.0L148.7,120.0L151.3,120.0L153.9,118.8L156.5,120.0L159.1,119.4L161.7,78.8L164.3,70.6L167.0,106.9L169.6,120.0L172.2,120.0L174.8,118.1L177.4,113.1L180.0,120.0L182.6,114.4L185.2,102.5L187.8,120.0L190.4,107.5L193.0,120.0L195.7,116.3L198.3,118.8L200.9,119.4L203.5,97.5L206.1,81.9L208.7,105.0L211.3,116.3L213.9,108.8L216.5,111.9L219.1,75.6L221.7,100.0L224.3,100.0L227.0,81.3L229.6,95.6L232.2,118.1L234.8,117.5L237.4,120.0L240.0,120.0L242.6,120.0L245.2,120.0L247.8,120.0L250.4,120.0L253.0,120.0L255.7,120.0L258.3,120.0L260.9,109.4L263.5,115.0L266.1,120.0L268.7,120.0L271.3,120.0L273.9,120.0L276.5,120.0L279.1,118.8L281.7,114.4L284.3,113.8L287.0,120.0L289.6,40.0L292.2,105.0L294.8,88.8L297.4,111.3L300.0,91.3L302.6,75.6L305.2,83.1L307.8,92.5L310.4,84.4L313.0,80.0L315.7,52.5L318.3,77.5L320.9,100.6L323.5,87.5L326.1,119.4L328.7,119.4L331.3,118.8L333.9,119.4L336.5,120.0L339.1,120.0L341.7,83.8L344.3,96.9L347.0,112.5L349.6,111.9L352.2,115.0L354.8,87.5L357.4,81.3L360.0,53.1L362.6,52.5L365.2,16.9L367.8,14.4L370.4,27.5L373.0,60.6L375.7,105.6L378.3,115.0L380.9,65.6L383.5,55.0L386.1,113.8L388.7,115.0L391.3,84.4L393.9,95.6L396.5,101.9L399.1,115.6L401.7,99.4L404.3,120.0L407.0,120.0L409.6,100.0L412.2,76.3L414.8,110.6L417.4,110.0L420.0,58.8L422.6,108.1L425.2,84.4L427.8,91.3L430.4,95.0L433.0,61.3L435.7,93.8L438.3,60.0L440.9,29.4L443.5,71.9L446.1,113.1L448.7,110.0L451.3,102.5L453.9,103.8L456.5,118.1L459.1,103.8L461.7,66.3L464.3,94.4L467.0,81.3L469.6,100.0L472.2,91.9L474.8,115.6L477.4,120.0L480.0,120.0L482.6,120.0L485.2,120.0L487.8,120.0L490.4,120.0L493.0,120.0L495.7,120.0L498.3,120.0L500.9,120.0L503.5,120.0L506.1,120.0L508.7,120.0L511.3,120.0L513.9,120.0L516.5,120.0L519.1,120.0L521.7,120.0L524.3,120.0L527.0,120.0L529.6,120.0L532.2,120.0L534.8,120.0L537.4,120.0L540.0,120.0" fill="none" stroke="#4dbb7a" stroke-width="2" class="chart-line-g2"/>
+      <path d="M0.0,90.6L2.6,85.6L5.2,110.0L7.8,115.0L10.4,54.4L13.0,100.0L15.7,108.8L18.3,106.3L20.9,113.8L23.5,115.0L26.1,85.0L28.7,105.0L31.3,112.5L33.9,68.8L36.5,84.4L39.1,79.4L41.7,58.1L44.3,89.4L47.0,61.3L49.6,72.5L52.2,83.1L54.8,83.1L57.4,119.4L60.0,108.1L62.6,106.9L65.2,108.1L67.8,120.0L70.4,100.6L73.0,105.0L75.7,111.9L78.3,75.6L80.9,99.4L83.5,102.5L86.1,88.8L88.7,118.8L91.3,118.1L93.9,118.8L96.5,119.4L99.1,118.8L101.7,116.9L104.3,113.8L107.0,116.3L109.6,118.1L112.2,117.5L114.8,120.0L117.4,118.8L120.0,103.8L122.6,106.9L125.2,120.0L127.8,101.9L130.4,92.5L133.0,107.5L135.7,118.1L138.3,107.5L140.9,116.3L143.5,118.8L146.1,120.0L148.7,120.0L151.3,120.0L153.9,118.8L156.5,120.0L159.1,119.4L161.7,78.8L164.3,70.6L167.0,106.9L169.6,120.0L172.2,120.0L174.8,118.1L177.4,113.1L180.0,120.0L182.6,114.4L185.2,102.5L187.8,120.0L190.4,107.5L193.0,120.0L195.7,116.3L198.3,118.8L200.9,119.4L203.5,97.5L206.1,81.9L208.7,105.0L211.3,116.3L213.9,108.8L216.5,111.9L219.1,75.6L221.7,100.0L224.3,100.0L227.0,81.3L229.6,95.6L232.2,118.1L234.8,117.5L237.4,120.0L240.0,120.0L242.6,120.0L245.2,120.0L247.8,120.0L250.4,120.0L253.0,120.0L255.7,120.0L258.3,120.0L260.9,109.4L263.5,115.0L266.1,120.0L268.7,120.0L271.3,120.0L273.9,120.0L276.5,120.0L279.1,118.8L281.7,114.4L284.3,113.8L287.0,120.0L289.6,40.0L292.2,105.0L294.8,88.8L297.4,111.3L300.0,91.3L302.6,75.6L305.2,83.1L307.8,92.5L310.4,84.4L313.0,80.0L315.7,52.5L318.3,77.5L320.9,100.6L323.5,87.5L326.1,119.4L328.7,119.4L331.3,118.8L333.9,119.4L336.5,120.0L339.1,120.0L341.7,83.8L344.3,96.9L347.0,112.5L349.6,111.9L352.2,115.0L354.8,87.5L357.4,81.3L360.0,53.1L362.6,52.5L365.2,16.9L367.8,14.4L370.4,27.5L373.0,60.6L375.7,105.6L378.3,115.0L380.9,65.6L383.5,55.0L386.1,113.8L388.7,115.0L391.3,84.4L393.9,95.6L396.5,101.9L399.1,115.6L401.7,99.4L404.3,120.0L407.0,120.0L409.6,100.0L412.2,76.3L414.8,110.6L417.4,110.0L420.0,58.8L422.6,108.1L425.2,84.4L427.8,91.3L430.4,95.0L433.0,61.3L435.7,93.8L438.3,60.0L440.9,29.4L443.5,71.9L446.1,113.1L448.7,110.0L451.3,102.5L453.9,103.8L456.5,118.1L459.1,103.8L461.7,66.3L464.3,94.4L467.0,81.3L469.6,100.0L472.2,91.9L474.8,110.6L477.4,120.0L480.0,120.0L482.6,120.0L485.2,120.0L487.8,120.0L490.4,120.0L493.0,120.0L495.7,120.0L498.3,120.0L500.9,120.0L503.5,120.0L506.1,120.0L508.7,120.0L511.3,120.0L513.9,120.0L516.5,120.0L519.1,120.0L521.7,120.0L524.3,120.0L527.0,120.0L529.6,120.0L532.2,120.0L534.8,120.0L537.4,120.0L540.0,120.0 L540.0,120.0 L0.0,120.0 Z" fill="url(#chart-grad-at)" stroke="none" class="chart-fill"/>
+      <path d="M0.0,90.6L2.6,85.6L5.2,110.0L7.8,115.0L10.4,54.4L13.0,100.0L15.7,108.8L18.3,106.3L20.9,113.8L23.5,115.0L26.1,85.0L28.7,105.0L31.3,112.5L33.9,68.8L36.5,84.4L39.1,79.4L41.7,58.1L44.3,89.4L47.0,61.3L49.6,72.5L52.2,83.1L54.8,83.1L57.4,119.4L60.0,108.1L62.6,106.9L65.2,108.1L67.8,120.0L70.4,100.6L73.0,105.0L75.7,111.9L78.3,75.6L80.9,99.4L83.5,102.5L86.1,88.8L88.7,118.8L91.3,118.1L93.9,118.8L96.5,119.4L99.1,118.8L101.7,116.9L104.3,113.8L107.0,116.3L109.6,118.1L112.2,117.5L114.8,120.0L117.4,118.8L120.0,103.8L122.6,106.9L125.2,120.0L127.8,101.9L130.4,92.5L133.0,107.5L135.7,118.1L138.3,107.5L140.9,116.3L143.5,118.8L146.1,120.0L148.7,120.0L151.3,120.0L153.9,118.8L156.5,120.0L159.1,119.4L161.7,78.8L164.3,70.6L167.0,106.9L169.6,120.0L172.2,120.0L174.8,118.1L177.4,113.1L180.0,120.0L182.6,114.4L185.2,102.5L187.8,120.0L190.4,107.5L193.0,120.0L195.7,116.3L198.3,118.8L200.9,119.4L203.5,97.5L206.1,81.9L208.7,105.0L211.3,116.3L213.9,108.8L216.5,111.9L219.1,75.6L221.7,100.0L224.3,100.0L227.0,81.3L229.6,95.6L232.2,118.1L234.8,117.5L237.4,120.0L240.0,120.0L242.6,120.0L245.2,120.0L247.8,120.0L250.4,120.0L253.0,120.0L255.7,120.0L258.3,120.0L260.9,109.4L263.5,115.0L266.1,120.0L268.7,120.0L271.3,120.0L273.9,120.0L276.5,120.0L279.1,118.8L281.7,114.4L284.3,113.8L287.0,120.0L289.6,40.0L292.2,105.0L294.8,88.8L297.4,111.3L300.0,91.3L302.6,75.6L305.2,83.1L307.8,92.5L310.4,84.4L313.0,80.0L315.7,52.5L318.3,77.5L320.9,100.6L323.5,87.5L326.1,119.4L328.7,119.4L331.3,118.8L333.9,119.4L336.5,120.0L339.1,120.0L341.7,83.8L344.3,96.9L347.0,112.5L349.6,111.9L352.2,115.0L354.8,87.5L357.4,81.3L360.0,53.1L362.6,52.5L365.2,16.9L367.8,14.4L370.4,27.5L373.0,60.6L375.7,105.6L378.3,115.0L380.9,65.6L383.5,55.0L386.1,113.8L388.7,115.0L391.3,84.4L393.9,95.6L396.5,101.9L399.1,115.6L401.7,99.4L404.3,120.0L407.0,120.0L409.6,100.0L412.2,76.3L414.8,110.6L417.4,110.0L420.0,58.8L422.6,108.1L425.2,84.4L427.8,91.3L430.4,95.0L433.0,61.3L435.7,93.8L438.3,60.0L440.9,29.4L443.5,71.9L446.1,113.1L448.7,110.0L451.3,102.5L453.9,103.8L456.5,118.1L459.1,103.8L461.7,66.3L464.3,94.4L467.0,81.3L469.6,100.0L472.2,91.9L474.8,110.6L477.4,120.0L480.0,120.0L482.6,120.0L485.2,120.0L487.8,120.0L490.4,120.0L493.0,120.0L495.7,120.0L498.3,120.0L500.9,120.0L503.5,120.0L506.1,120.0L508.7,120.0L511.3,120.0L513.9,120.0L516.5,120.0L519.1,120.0L521.7,120.0L524.3,120.0L527.0,120.0L529.6,120.0L532.2,120.0L534.8,120.0L537.4,120.0L540.0,120.0" fill="none" stroke="#7ab868" stroke-width="2" class="chart-line-g2"/>
     </svg>
     <!-- All-time stats: 2×2 grid to the right of chart, x=560 within this group -->
-    <line x1="560" y1="28" x2="560" y2="198" stroke="#4dbb7a" stroke-width="1" opacity="0.25"/>
+    <line x1="560" y1="28" x2="560" y2="198" stroke="#7ab868" stroke-width="1" opacity="0.25"/>
     <text x="572" y="44" class="monospace text-green-dim" font-size="8" font-weight="bold">ALL-TIME STATS</text>
     <!-- col1 -->
     <text x="572" y="68"  class="monospace text-green" font-size="9">TOTAL COMMITS</text>
-    <text x="572" y="84"  class="monospace text-white" font-size="15" font-weight="bold">6367</text>
+    <text x="572" y="84"  class="monospace text-white" font-size="15" font-weight="bold">6375</text>
     <text x="572" y="114" class="monospace text-green" font-size="9">PEAK / WK</text>
     <text x="572" y="130" class="monospace text-white" font-size="15" font-weight="bold">169</text>
     <!-- col2 -->
