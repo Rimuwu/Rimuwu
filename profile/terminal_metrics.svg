@@ -87,7 +87,7 @@
         <text x="169.1" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Feb</text>
         <text x="196.2" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Mar</text>
         <text x="223.2" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Apr</text>
-        <text x="257.1" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">May</text>
+        <text x="250.3" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">May</text>
         <text x="284.1" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Jun</text>
         <text x="311.2" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Jul</text>
         <text x="345.0" y="115" class="monospace text-green-dim" font-size="8" text-anchor="middle">Aug</text>
@@ -159,7 +159,7 @@
     <text x="572" y="44" class="monospace text-green-dim" font-size="8" font-weight="bold">ALL-TIME STATS</text>
     <!-- col1 -->
     <text x="572" y="68"  class="monospace text-green" font-size="9">TOTAL COMMITS</text>
-    <text x="572" y="84"  class="monospace text-white" font-size="15" font-weight="bold">20746</text>
+    <text x="572" y="84"  class="monospace text-white" font-size="15" font-weight="bold">20779</text>
     <text x="572" y="114" class="monospace text-green" font-size="9">PEAK / WK</text>
     <text x="572" y="130" class="monospace text-white" font-size="15" font-weight="bold">80</text>
     <!-- col2 -->
