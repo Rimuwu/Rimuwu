@@ -158,7 +158,7 @@
     <text x="572" y="44" class="monospace text-green-dim" font-size="8" font-weight="bold">ALL-TIME STATS</text>
     <!-- col1 -->
     <text x="572" y="68"  class="monospace text-green" font-size="9">TOTAL COMMITS</text>
-    <text x="572" y="84"  class="monospace text-white" font-size="15" font-weight="bold">20807</text>
+    <text x="572" y="84"  class="monospace text-white" font-size="15" font-weight="bold">20744</text>
     <text x="572" y="114" class="monospace text-green" font-size="9">PEAK / WK</text>
     <text x="572" y="130" class="monospace text-white" font-size="15" font-weight="bold">80</text>
     <!-- col2 -->
